@@ -1,0 +1,17 @@
+{
+  "name": "asciidoctor-anywhere-footnote",
+  "version": "1.0.0",
+  "description": "Allows you to put footnote blocks anywhere on the page.",
+  "main": "asciidoctor-anywhere-footnote.ts",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+
+  "devDependencies": {
+    "@types/jest": "^28.1.0",
+    "jest": "^28.1.0"
+  }
+}
