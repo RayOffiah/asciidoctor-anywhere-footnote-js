@@ -26,7 +26,7 @@ test('Test for two footnotes on the same line', () => {
     const footnote_list = parser.parse("This is my{empty}awfootnote:my-block[refid='key'] followed by another oneawfootnote:my-block[With text].", {actions}).elements[1]
 
     expect(footnote_list).not.toBeNull()
-    expect(footnote_list.size).toBe(2)
+    expect(footnote_list.length).toBe(2)
 
 
 })
@@ -36,7 +36,7 @@ test('Test for three footnotes on the same line', () => {
     const footnote_list = parser.parse("This is my{empty}awfootnote:my-block[refid='key'] followed by another oneawfootnote:my-block[With text]. And another block.awfootnote:my-block[Spare text]", {actions}).elements[1]
 
     expect(footnote_list).not.toBeNull()
-    expect(footnote_list.size).toBe(3)
+    expect(footnote_list.length).toBe(3)
 
 
 })

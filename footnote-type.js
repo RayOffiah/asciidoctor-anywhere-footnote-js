@@ -12,7 +12,7 @@ class AWFootNoteType {
     
 }
 
-let footnote_list = new Set()
+let footnote_list = []
 
 module.exports = AWFootNoteType;
 module.exports.footnote_list = footnote_list;

@@ -41,7 +41,7 @@ const actions = {
         awfootnote.block_id = elements[1].text
         awfootnote.start = start
         awfootnote.end = end - 1
-        footnote_list.add(awfootnote)
+        footnote_list.push(awfootnote)
         return footnote_list
     }
     
