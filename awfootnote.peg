@@ -1,11 +1,13 @@
 grammar awfootnote
-    document        <-  (content / footnote)*
-    content         <-  (!footnote .)+ /.
-    footnote        <-  "awfootnote:" id "[" parameters "]"
+    document        <-  (footnote / content)*
+    content         <-  (!footnote .)+
+    footnote        <-  "awfootnote:" block_id:id "[" parameter_list "]" %store_footnote
     id              <-  [^\[]+
-    parameters      <-  textParameter / refIdParameter
-    textParameter   <-  [^\]]+
-    refIdParameter  <-  "refid=" quote refid:id quote
-    quote           <-  [\"\']
+    parameter_list  <-  textParameter / refIdParameter
+    refIdParameter  <-  "refid=" quote ref_id:refid quote %get_ref_id
+    textParameter   <- (!refIdParameter [^\]])+ %get_text_parameter
+    refid           <- [^\']+
+    quote           <-  [\']
+
 
 
