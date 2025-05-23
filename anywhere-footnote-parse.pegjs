@@ -28,9 +28,22 @@
 document        
   =  (footnote / content)* {
   
-        let uniqueFootnotes = []
-    
-       return _.uniqBy(footnote_list, 'start')
+        let uniqueFootnotes =  _.uniqBy(footnote_list, 'start')
+        let groupedFootnotes = _.groupBy(uniqueFootnotes, 'block_id')
+        
+        Object.keys(groupedFootnotes).forEach(blockId => {
+        
+          let counter = 0
+          let awFootnote_block = groupedFootnotes[blockId]
+          
+          awFootnote_block.forEach(footnote => {
+         
+            footnote.footnote_marker = String(++counter)
+            
+          })
+        })
+
+        return groupedFootnotes
   }
   
 content         
@@ -40,7 +53,7 @@ footnote
   =  "awfootnote:" block_id:id "[" parameter_list "]" {
   
       anywhereFootnote.block_id = block_id.join('').trim()
-      
+     
       // Now get positional information.
       let location_info = location()
       anywhereFootnote.start = location_info.start.offset

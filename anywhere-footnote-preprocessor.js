@@ -1,7 +1,5 @@
 require('@asciidoctor/core');
-const  { parse } = require('./awfootnote.js');
-const actions = require('./anywhere-actions.js')
-require('./footnote-type.js')
+const parse = require("./anywhere-footnote-parse").parse
 const AWFootNoteType = require('./footnote-type')
 
 
@@ -30,25 +28,15 @@ function processInlines(document, reader) {
 
         try {
             
-            let footnote_list = parse(line, {actions})
+            let footnote_list = parse(line)
             
-            if (footnote_list.elements.some(element => element instanceof Array 
-                && element.some(e => e instanceof AWFootNoteType))) {
+            footnote_list.forEach(footnote => {
                 
-                footnote_list.elements.filter(element => element instanceof Array 
-                    && element.some(e => e instanceof AWFootNoteType))
-                    .forEach(e => {
-                        
-                        anchor_count = anchor_count + 1
-                        let anchor_id = e.block_id + '-' + anchor_count
-                        let anchor_text = `xref:#${e.block_id}-${anchor_count}[^${anchor_id}^]`
-                        new_lines.push(line.substring(0, e.start) + anchor_text + line.substring(e.end + 1))
-                    })
-            }
-            else {
-                new_lines.push(line)
-            }
-            
+                let footnote_string = `xref#${footnote.refid}[^${footnote.footnote_marker}^]`
+                let new_line = replaceAt(footnote.start, footnote.end, footnote_string)
+                console.log(new_line)
+                new_lines.push(new_line)
+            })
         } 
         catch (e) {
             // If the match fails, then just copy the line as is.
@@ -62,3 +50,6 @@ function processInlines(document, reader) {
 }
 
 
+function replaceAt(string, start, end, replacement) {
+    return string.substring(0, start) + replacement + string.substring(end);
+}
