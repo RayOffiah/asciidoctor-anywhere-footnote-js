@@ -46,7 +46,7 @@ function processInlines(document, reader) {
 
                     footnote_block.forEach(footnote => {
 
-                        let footnote_string = `^[xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.footnote_marker}]]^`
+                        let footnote_string = `[#${footnote.ref_id}-ref]^[xref:${footnote.ref_id}-block[${footnote.footnote_marker}]]^`
                         let new_line = replaceAt(line, footnote.start, footnote.end + 1, footnote_string)
                         console.log(new_line)
                         new_lines.push(new_line)

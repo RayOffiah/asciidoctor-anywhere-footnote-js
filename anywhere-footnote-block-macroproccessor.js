@@ -16,7 +16,7 @@ module.exports = function (registry) {
             let text = ''
             
             block.forEach(footnote => {
-                text += `^\[xref:${footnote.ref_id}[${footnote.footnote_marker}]\]^ ${footnote.text_parameter} +\n`
+                text += `[#${footnote.ref_id}-block]^\[xref:${footnote.ref_id}-ref[${footnote.footnote_marker}]\]^ ${footnote.text_parameter} +\n`
             })
             
             return this.createBlock(parent, 'paragraph', text)
