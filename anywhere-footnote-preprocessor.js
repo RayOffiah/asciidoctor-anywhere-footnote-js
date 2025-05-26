@@ -1,10 +1,8 @@
 require('@asciidoctor/core');
 const parse = require("./anywhere-footnote-parse").parse
-const AWFootNoteType = require('./footnote-type')
-const {Asciidoctor} = require('@asciidoctor/core')
-const {footnote_list} = require('./footnote-type')
 
 const EXISTING_FOOTNOTES = "existing-footnotes"
+let existing_footnotes = {}
 
 module.exports = function (registry) {
     
@@ -14,7 +12,8 @@ module.exports = function (registry) {
             
 
             processInlines(document, reader)
-
+            document.setAttribute(EXISTING_FOOTNOTES, JSON.stringify(existing_footnotes))
+            
             return reader
         })
 
@@ -26,7 +25,6 @@ function processInlines(document, reader) {
     
     const lines = reader.getLines();
     let new_lines = []
-    let existing_footnotes = {}
     
     lines.forEach(line => {
 
@@ -48,7 +46,7 @@ function processInlines(document, reader) {
 
                     footnote_block.forEach(footnote => {
 
-                        let footnote_string = `pass:q[<a href="#${footnote.block_id}-${footnote.ref_id} class="footnote-ref"><sup>${footnote.footnote_marker}</sup></a>]`
+                        let footnote_string = `xref:${footnote.block_id}-${footnote.ref_id}[^\[${footnote.footnote_marker}\]^]`
                         let new_line = replaceAt(line, footnote.start, footnote.end + 1, footnote_string)
                         console.log(new_line)
                         new_lines.push(new_line)
@@ -73,7 +71,8 @@ function processInlines(document, reader) {
         
     })
     
-    return reader.lines = new_lines.reverse()
+    
+    reader.lines = new_lines.reverse()
 }
 
 function getFootnoteBlockForAttaching(key, existing_footnotes) {
