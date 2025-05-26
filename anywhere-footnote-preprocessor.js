@@ -37,34 +37,43 @@ function processInlines(document, reader) {
             
             let footnote_list = parse(line)
 
+            // The parser will match anything, but it will only return the footnote list
+            // if afnotes are found in the line.
+            if (Object.entries(footnote_list).length > 0) {
+
+                Object.entries(footnote_list).forEach(([key, footnote_block]) => {
+
+                    let block_to_attach_to = getFootnoteBlockForAttaching(key, existing_footnotes)
+                    footnote_list = addFootNoteReferences(footnote_list, key, block_to_attach_to)
+
+                    footnote_block.forEach(footnote => {
+
+                        let footnote_string = `pass:q[<a href="#${footnote.block_id}-${footnote.ref_id} class="footnote-ref"><sup>${footnote.footnote_marker}</sup></a>]`
+                        let new_line = replaceAt(line, footnote.start, footnote.end + 1, footnote_string)
+                        console.log(new_line)
+                        new_lines.push(new_line)
+                        block_to_attach_to[key].push(footnote)
+
+                    })
+
+
+                })            
+            }
+            else {
+                new_lines.push(line)
+            }
             
-            Object.entries(footnote_list).forEach(([key, footnote_block]) => {
 
-                let block_to_attach_to = getFootnoteBlockForAttaching(key, existing_footnotes)
-                footnote_list = addFootNoteReferences(footnote_list, key, block_to_attach_to)
-                
-                footnote_block.forEach(footnote => {
-
-                    let footnote_string = `xref#${footnote.block_id}-${footnote.ref_id}[^${footnote.footnote_marker}^]`
-                    let new_line = replaceAt(line, footnote.start, footnote.end + 1, footnote_string)
-                    console.log(new_line)
-                    new_lines.push(new_line)
-                    block_to_attach_to[key].push(footnote)
-                    
-                })
-                
-
-            })
         } 
         catch (e) {
-            // If the match fails, then just copy the line as is.
+            // If the match does fail, then just copy the line as is.
             new_lines.push(line)
         }
         
         
     })
     
-    return reader.lines = new_lines
+    return reader.lines = new_lines.reverse()
 }
 
 function getFootnoteBlockForAttaching(key, existing_footnotes) {
