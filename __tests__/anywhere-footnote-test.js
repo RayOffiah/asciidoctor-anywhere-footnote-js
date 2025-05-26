@@ -2,6 +2,8 @@ const asciidoctor = require('@asciidoctor/core')()
 const registry = asciidoctor.Extensions.create()
 require('../anywhere-footnote-preprocessor')(registry)
 require('../anywhere-footnote-block-macroproccessor')(registry)
+const fs = require('fs');
+
 
 test('Load basic file', () => {
 
@@ -37,7 +39,19 @@ afnote::first-block[]
 
     let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
         extension_registry: registry})
-    console.log(converted_doc)
+    writeFile("two-lines.html", converted_doc)
     
 
 })
+
+function writeFile(filename, content) {
+    
+    fs.writeFile(filename, content, function(err) {
+        
+        if(err) {
+            return console.log(err);
+        }
+        
+        console.log("The file was saved!");
+    })
+}
