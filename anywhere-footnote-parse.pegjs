@@ -20,6 +20,7 @@
  
   let anywhereFootnote = new AnywhereFootnote()
   let footnote_list = []
+  let counter = 0
       
 }
 
@@ -31,18 +32,6 @@ document
         let uniqueFootnotes =  _.uniqBy(footnote_list, 'start')
         let groupedFootnotes = _.groupBy(uniqueFootnotes, 'block_id')
         
-        Object.keys(groupedFootnotes).forEach(blockId => {
-        
-          let counter = 0
-          let awFootnote_block = groupedFootnotes[blockId]
-          
-          awFootnote_block.forEach(footnote => {
-         
-            footnote.footnote_marker = String(++counter)
-            
-          })
-        })
-
         return groupedFootnotes
   }
   
@@ -50,7 +39,7 @@ content
   =  (!footnote .)+
   
 footnote        
-  =  "awfootnote:" block_id:id "[" parameter_list "]" {
+  =  "afnote:" block_id:id "[" parameter_list "]" {
   
       anywhereFootnote.block_id = block_id.join('').trim()
      
