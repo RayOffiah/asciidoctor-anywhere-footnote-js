@@ -10,12 +10,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/jest": "^28.1.0",
-    "jest": "^28.1.0"
+    "@types/jest": "^28.1.8",
+    "@types/node": "^22.15.21",
+    "jest": "^28.1.0",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@asciidoctor/core": "^2.2.6",
-    "peggy": "^5.0.2",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "peggy": "^5.0.2"
   }
 }

@@ -11,6 +11,7 @@
       this.block_id = ""
       this.text_parameter = ""
       this.ref_id = ""
+      this.original_ref_id = ""
       this.footnote_marker = ""
       
     }
@@ -30,9 +31,7 @@ document
   =  (footnote / content)* {
   
         let uniqueFootnotes =  _.uniqBy(footnote_list, 'start')
-        let groupedFootnotes = _.groupBy(uniqueFootnotes, 'block_id')
-        
-        return groupedFootnotes
+        return uniqueFootnotes
   }
   
 content         
@@ -67,6 +66,7 @@ refIdParameter
     }
     
     anywhereFootnote.ref_id = ref_id.join('').trim()
+    anywhereFootnote.original_ref_id = anywhereFootnote.ref_id
     return anywhereFootnote
   }
   
