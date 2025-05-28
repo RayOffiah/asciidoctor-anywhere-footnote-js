@@ -91,7 +91,8 @@ function addFootNoteReferences(footnote) {
         footnote.footnote_marker = getExistingFootnoteMarker(existing_footnotes, footnote.ref_id);
     }
     
-    footnote.ref_id = `${footnote.ref_id}-${counter}`;
+    footnote.ref_id = footnote.ref_id ? `${footnote.ref_id}-${counter}` : `${counter}`
+
 
    // Set default footnote marker if none exists
     if (!footnote.footnote_marker) {
