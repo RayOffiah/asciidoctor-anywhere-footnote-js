@@ -13,13 +13,15 @@ describe('Test the preprocessor', () => {
 = Test document
 
 This is a test document.
-It has two lines{empty}awfootnote:first-block[This is a footnote], the last of which will contain a footnote
+It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote
+
+afnote::first-block[]
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})
 
-        console.log(converted_doc)
+        writeFile("basic.html", converted_doc)
 
     })
 

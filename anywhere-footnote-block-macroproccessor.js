@@ -1,6 +1,5 @@
 require('@asciidoctor/core');
 const _ = require('lodash');
-const foonote = require('./footnote-type')
 module.exports = function (registry) {
 
     registry.blockMacro(function () {
