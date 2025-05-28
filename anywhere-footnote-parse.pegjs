@@ -56,7 +56,7 @@ id
   =  [^\[]+
   
 parameter_list  
-  = textParameter / refIdParameter
+  = refIdParameter __ "," __ textParameter / refIdParameter / textParameter
   
 refIdParameter  
   =  "refid=" quote ref_id:refid quote {
@@ -86,4 +86,7 @@ refid
   
 quote           
   =  [\\']
+  
+__
+  = [ \t]*
 
