@@ -1,7 +1,7 @@
 const asciidoctor = require('@asciidoctor/core')()
 const registry = asciidoctor.Extensions.create()
-require('../anywhere-footnote-preprocessor')(registry)
-require('../anywhere-footnote-block-macroproccessor')(registry)
+require('../anywhere-footnote-treeprocessor')(registry)
+
 const fs = require('fs');
 
 describe('Test the preprocessor', () => {
