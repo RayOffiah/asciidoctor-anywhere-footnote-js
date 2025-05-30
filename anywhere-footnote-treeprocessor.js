@@ -117,8 +117,15 @@ function processBlocks(block) {
                     let footnote_group = groupedFootnotes[check_line]
                     
                     footnote_group.forEach(footnote => {
-                        let new_line = `xref:${footnote.ref_id}[^${footnote.footnote_marker}^] ${footnote.text_parameter} +\n`
-                        new_lines.push(new_line)  
+                        
+                        // Make sure you have text for the footnote. If you don't, then
+                        // you're looking at a reference to an existing footnote.
+                        
+                        if (footnote.text_parameter) {
+                            let new_line = `xref:${footnote.ref_id}[^${footnote.footnote_marker}^] ${footnote.text_parameter} +\n`
+                            new_lines.push(new_line)
+                        }
+
                     })
                     
     
