@@ -156,6 +156,120 @@ function processBlocks(block) {
 
     
 }
+
+
+function processBlockByType(block) {
+    const context = block.getContext();
+
+    // Common properties to copy for all blocks
+    const commonProps = {
+        id: block.getId(),
+        context: context,
+        title: block.getTitle(),
+        attributes: block.getAttributes()
+    };
+
+    // Type-specific processing
+    switch(context) {
+        case 'section':
+            return processSectionBlock(block, commonProps);
+
+        case 'paragraph':
+            return processParagraphBlock(block, commonProps);
+
+        case 'listing':
+            return processListingBlock(block, commonProps);
+
+        case 'table':
+            return processTableBlock(block, commonProps);
+
+        case 'image':
+            return processImageBlock(block, commonProps);
+
+        case 'admonition':
+            return processAdmonitionBlock(block, commonProps);
+
+        // Handle other block types
+        default:
+            return processDefaultBlock(block, commonProps);
+    }
+}
+
+function processSectionBlock(block, props) {
+    return {
+        ...props,
+        level: block.getLevel(),
+        numeral: block.getNumeral(),
+        children: processChildren(block)
+    };
+}
+
+function processParagraphBlock(block, props) {
+    return {
+        ...props,
+        lines: block.getLines(),
+        source: block.getSource(),
+        children: processChildren(block)
+    };
+}
+
+function processListingBlock(block, props) {
+    return {
+        ...props,
+        lines: block.getLines(),
+        style: block.getStyle(),
+        source: block.getSource(),
+        children: processChildren(block)
+    };
+}
+
+function processTableBlock(block, props) {
+    // Tables have special structure with rows and cells
+    const rows = [];
+    // Process table rows and cells
+    // This would require accessing the table's specialized methods
+
+    return {
+        ...props,
+        rows: rows,
+        children: processChildren(block)
+    };
+}
+
+function processAdmonitionBlock(block, props) {
+    return {
+        ...props,
+        // Admonition-specific properties
+        style: block.getStyle(), // Gets the admonition type (note, warning, tip, etc.)
+        lines: block.getLines(), // Gets the content lines
+        source: block.getSource(), // Gets the raw source
+        caption: block.getCaption(), // Gets the caption if present
+        children: processChildren(block) // Process any nested blocks
+    };
+}
+
+function processDefaultBlock(block, props) {
+    // Generic block processing for any type not explicitly handled
+    return {
+        ...props,
+        style: block.getStyle(),
+        lines: block.getLines(),
+        source: block.getSource(),
+        role: block.getRole(),
+        caption: block.getCaption(),
+        children: processChildren(block)
+    };
+}
+
+// Helper to process children
+function processChildren(block) {
+    const children = [];
+    block.getBlocks().forEach(child => {
+        children.push(processBlockByType(child));
+    });
+    return children;
+}
+
 function numberOfFootnotesInBlock() {
     return existing_footnotes.filter(footnote => footnote.block_id === footnote.block_id).length
 }
