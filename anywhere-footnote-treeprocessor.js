@@ -1,7 +1,6 @@
 require('@asciidoctor/core');
 const parse = require("./anywhere-footnote-parse").parse
 const _ = require('lodash')
-const EXISTING_FOOTNOTES = "existing-footnotes"
 let existing_footnotes = []
 
 module.exports = function (registry) {
@@ -141,7 +140,7 @@ function processBlocks(block) {
         subBlock.lines = new_lines
 
         if (subBlock.getBlocks().length > 0) {
-            processInlines(subBlock)
+            processBlocks(subBlock)
         }
 
     })
