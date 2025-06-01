@@ -10,6 +10,7 @@ describe('Test the preprocessor', () => {
 
         let input_document = ` 
 
+
 = Test document
 
 == First section

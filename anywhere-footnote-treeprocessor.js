@@ -10,7 +10,7 @@ module.exports = function (registry) {
     registry.treeProcessor(function () {
         
         this.process((document) => {
-
+            
             processInlines(document)
             processBlocks(document)
             return document
@@ -71,7 +71,7 @@ function processBlocks(block) {
                             // you're looking at a reference to an existing footnote.
 
                             if (footnote.text_parameter) {
-                                let new_line = `xref:${footnote.ref_id}[^${footnote.footnote_marker}^] ${footnote.text_parameter} +\n`
+                                let new_line = `^xref:${footnote.ref_id}[role=footnote,[${footnote.footnote_marker}]^ ${footnote.text_parameter} +\n`
                                 new_lines.push(new_line)
                             }
 
@@ -87,8 +87,7 @@ function processBlocks(block) {
                     // If the match does fail, then just copy the line as is.
                     new_lines.push(line)
                 }
-
-
+                
             })
 
             subBlock.lines = new_lines
