@@ -98,10 +98,13 @@ function replaceLine(line) {
 
     let  awFootnotes = parse(line)
 
+    const role =  "footnote"; // Use a default role or one from the footnote object
+
+
     if (awFootnotes.length > 0) {
         awFootnotes.forEach(footnote => {
             addFootNoteReferences(footnote)
-            let footnote_string = `[#${footnote.block_id}-${footnote.ref_id}-ref]^[xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.footnote_marker}]]^`
+            let footnote_string = `[#${footnote.block_id}-${footnote.ref_id}-ref]^[xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.footnote_marker},role=footnote]]^`
             line = replaceFootnoteTag(line, footnote_string)
             footnote_list.push(footnote)
         })

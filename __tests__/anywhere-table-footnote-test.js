@@ -38,6 +38,8 @@ In this document, we use a table with footnotes. It's important to test this tho
 
 
 afnote::first-block[]
+
+And then follow it with some more text.
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
