@@ -8,6 +8,15 @@ const footnote_list = require('./footnote-type').footnote_list
  */
 const functionMap = {
     
+    'document': (block) => {
+        
+        return block
+    },
+    'section': (block) => {
+        
+        return block
+    },
+    
     'paragraph': (block) => {
         
         let lines = block.lines
@@ -16,40 +25,35 @@ const functionMap = {
         
         lines.forEach(line => {
             
-            try {
-                let  awFootnotes = parse(line)
+            line = replaceLine(line)
+            new_lines.push(line)
                 
-                if (awFootnotes.length > 0) {
-
-                    let new_line = line
-                    
-                    awFootnotes.forEach(footnote => {
-                        
-                        addFootNoteReferences(footnote)
-                        let footnote_string = `[#${footnote.block_id}-${footnote.ref_id}-ref]^[xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.footnote_marker}]]^`
-                        new_line = replaceFootnoteTag(new_line, footnote_string)
-                        footnote_list.push(footnote)
-                    })
-
-                    new_lines.push(new_line)
-                    
-                }
-                else {
-                    new_lines.push(line)
-                }
-            }
-            catch (e) {
-                new_lines.push(line)
-            }
+  
         })
      
-     block.lines = new_lines   
+         block.lines = new_lines   
         
     },
     
-    'table_cell': (block) => {
+    'table': (block) => {
+        
+        processTableCells(block.rows['head'])
+        processTableCells(block.rows['body'])
+        processTableCells(block.rows['foot'])
         
     }
+}
+
+function processTableCells(cell_lines) {
+
+    cell_lines.forEach(cell_line => {
+
+        cell_line.forEach(cell => {
+
+            cell.text = replaceLine(cell.text)
+
+        })
+    })
 }
 
 function addFootNoteReferences(footnote) {
@@ -87,6 +91,24 @@ function replaceFootnoteTag(string,  replacement) {
 
     const regex = /afnote:.+?\[.+?\]/
     return string.replace(regex, replacement)
+}
+
+
+function replaceLine(line) {
+
+    let  awFootnotes = parse(line)
+
+    if (awFootnotes.length > 0) {
+        awFootnotes.forEach(footnote => {
+            addFootNoteReferences(footnote)
+            let footnote_string = `[#${footnote.block_id}-${footnote.ref_id}-ref]^[xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.footnote_marker}]]^`
+            line = replaceFootnoteTag(line, footnote_string)
+            footnote_list.push(footnote)
+        })
+    }
+    
+    return line
+    
 }
 
 module.exports = { functionMap, footnote_list}

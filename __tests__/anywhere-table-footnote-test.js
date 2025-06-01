@@ -12,6 +12,14 @@ describe('Test the preprocessor', () => {
 
 = Test document
 
+== First section
+
+Some random text before we crack on with the table.
+
+And we can add in the Asciidoc logo
+
+image::asciidoc-logo.png[And a logo]
+
 In this document, we use a table with footnotes. It's important to test this thoroughly. Why?
 . It will make sure that nested items are handled correctly.
 . Table support is kind of the point.
