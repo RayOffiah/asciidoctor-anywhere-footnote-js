@@ -11,8 +11,8 @@ module.exports = function (registry) {
         
         this.process((document) => {
             
-            processInlines(document)
-            processBlocks(document)
+            // processInlines(document)
+            // processBlocks(document)
 
         })
 

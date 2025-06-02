@@ -114,4 +114,4 @@ function replaceLine(line) {
     
 }
 
-module.exports = { functionMap, footnote_list}
+module.exports = { functionMap, footnote_list, addFootNoteReferences, replaceFootnoteTag}
