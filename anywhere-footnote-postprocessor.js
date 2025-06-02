@@ -1,6 +1,5 @@
 require('@asciidoctor/core');
 
-const functionMap = require('./anywhere-function-map').functionMap
 const footnote_list = require('./anywhere-function-map').footnote_list
 const parse = require("./anywhere-footnote-parse").parse
 const addFootNoteReferences = require("./anywhere-function-map").addFootNoteReferences
@@ -15,7 +14,7 @@ module.exports = function (registry) {
             
             let lines =output.split('\n')
             lines = processInlines(lines)
-            processBlocks(lines)
+            lines = processBlocks(lines)
             
             output = lines.join('\n')
             
@@ -41,7 +40,7 @@ function processInlines(lines) {
                 awFootnotes.forEach(footnote => {
                     
                     addFootNoteReferences(footnote)
-                    let footnote_string = `<a id='${footnote.block_id}-${footnote.ref_id}-ref'><sup id ='${footnote.block_id}-${footnote.ref_id}-block'>${footnote.footnote_marker}</sup></a>`
+                    let footnote_string = `<a href='#${footnote.block_id}-${footnote.ref_id}-block' id='${footnote.block_id}-${footnote.ref_id}-ref' class="footnote" style="text-decoration: none"><sup>[${footnote.footnote_marker}]</sup></a>`
                     line = replaceFootnoteTag(line, footnote_string)
                     footnote_list.push(footnote)
                     
@@ -62,6 +61,8 @@ function processBlocks(lines) {
     let groupedFootnotes = _.groupBy(footnote_list, 'block_id')
             
     let new_lines = []
+    
+    let counter = 0
 
     lines.forEach(line => {
 
@@ -69,6 +70,7 @@ function processBlocks(lines) {
 
             // Get hold of the existing list.
 
+            ++counter
             let check_line = matchFootnoteBlock(line)
 
             // The parser will match anything, but it will only return the footnote list
@@ -77,18 +79,21 @@ function processBlocks(lines) {
 
                 let footnote_group = groupedFootnotes[check_line]
 
+                new_lines.push(`<div class="paragraph">`)
                 footnote_group.forEach(footnote => {
 
                     // Make sure you have text for the footnote. If you don't, then
                     // you're looking at a reference to an existing footnote.
 
                     if (footnote.text_parameter) {
-                        let new_line = `^xref:${footnote.ref_id}[role=footnote,[${footnote.footnote_marker}]^ ${footnote.text_parameter} +\n`
+                        let new_line = `<a href='#${footnote.block_id}-${footnote.ref_id}-ref' id='${footnote.block_id}-${footnote.ref_id}-block' class="footnote" style="text-decoration: none"><sup>${footnote.footnote_marker}</sup></a> ${footnote.text_parameter}<br/> `
                         new_lines.push(new_line)
                     }
 
                 })
 
+                new_lines.push(`</div>`)
+                new_lines.push(`<br/>`)
 
             } else {
                 new_lines.push(line)

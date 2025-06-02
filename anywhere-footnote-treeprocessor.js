@@ -1,3 +1,6 @@
+/**
+ * This processor is not in use
+ */
 require('@asciidoctor/core');
 
 const functionMap = require('./anywhere-function-map').functionMap
@@ -11,8 +14,8 @@ module.exports = function (registry) {
         
         this.process((document) => {
             
-            // processInlines(document)
-            // processBlocks(document)
+            processInlines(document)
+            processBlocks(document)
 
         })
 
