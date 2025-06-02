@@ -13,6 +13,7 @@ describe('Test the preprocessor', () => {
 
 = Test document
 
+:test: afnote::first-block[] 
 == First section
 
 Some random text before we crack on with the table.
@@ -38,7 +39,7 @@ In this document, we use a table with footnotes. It's important to test this tho
 |===
 
 
-afnote::first-block[]
+{test}
 
 And then follow it with some more text.
 `

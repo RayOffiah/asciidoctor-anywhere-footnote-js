@@ -13,7 +13,7 @@ module.exports = function (registry) {
             
             processInlines(document)
             processBlocks(document)
-            return document
+
         })
 
     })
@@ -48,7 +48,7 @@ function processBlocks(block) {
         if (subBlock.lines) {
             
             const lines = subBlock.lines
-
+            
             let new_lines = []
 
             lines.forEach(line => {
@@ -89,8 +89,9 @@ function processBlocks(block) {
                 }
                 
             })
-
+            
             subBlock.lines = new_lines
+            
         }
         
     })
@@ -105,5 +106,6 @@ function matchFootnoteBlock(string) {
     const regex = /afnote::(.+?)\[\]/
 
     let result = string.match(regex)
-    return result[1] ? result[1] : undefined
+    return result && result[1] ? result[1] : undefined
 }
+
