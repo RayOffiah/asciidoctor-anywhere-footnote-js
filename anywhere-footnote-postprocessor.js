@@ -1,10 +1,8 @@
 require('@asciidoctor/core');
 
-const footnote_list = require('./anywhere-function-map').footnote_list
 const parse = require("./anywhere-footnote-parse").parse
-const addFootNoteReferences = require("./anywhere-function-map").addFootNoteReferences
 const _ = require('lodash')
-const {replaceFootnoteTag} = require('./anywhere-function-map')
+const footnote_list = require('./footnote-type').footnote_list
 
 module.exports = function (registry) {
     
@@ -119,5 +117,46 @@ function matchFootnoteBlock(string) {
 
     let result = string.match(regex)
     return result && result[1] ? result[1] : undefined
+}
+
+function addFootNoteReferences(footnote) {
+
+    // First, find the highest footnote number. The easiest thing to do is 
+    // just count the number of footnotes in each block
+
+    let counter = numberOfFootnotesInBlock() + 1
+
+    if (footnote.ref_id && !footnote.text_parameter) {
+        
+        let referenced_footnote = getExistingFootnoteMarker(footnote_list, footnote.ref_id)
+        footnote.footnote_marker = referenced_footnote.footnote_marker
+        footnote.ref_id = referenced_footnote.ref_id
+    }
+    else {
+        footnote.ref_id = footnote.ref_id ? `${footnote.ref_id}-${counter}` : `${counter}`
+    }
+
+    
+    // Set default footnote marker if none exists
+    if (!footnote.footnote_marker) {
+        footnote.footnote_marker = `${counter}`;
+    }
+}
+
+function numberOfFootnotesInBlock() {
+    return footnote_list.filter(footnote => footnote.block_id === footnote.block_id).length
+}
+
+
+function getExistingFootnoteMarker(footnote_list, refid) {
+
+    return footnote_list.find(footnote => footnote.original_ref_id === refid && footnote.text_parameter)
+
+}
+
+function replaceFootnoteTag(string,  replacement) {
+
+    const regex = /afnote:.+?\[.+?\]/
+    return string.replace(regex, replacement)
 }
 

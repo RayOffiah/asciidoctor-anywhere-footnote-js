@@ -1,6 +1,6 @@
 const asciidoctor = require('@asciidoctor/core')()
 const registry = asciidoctor.Extensions.create()
-require('../anywhere-footnote-treeprocessor')(registry)
+require('../anywhere-footnote-postprocessor')(registry)
 
 const fs = require('fs');
 
@@ -69,6 +69,7 @@ afnote::first-block[]
     })
 
 })
+
 
 
 function writeFile(filename, content) {

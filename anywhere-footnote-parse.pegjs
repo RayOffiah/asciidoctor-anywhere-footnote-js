@@ -59,7 +59,7 @@ parameter_list
   = parameter (__ "," __ parameter)*
 
 parameter  
-  = refIdParameter / textParameter 
+  = refIdParameter / markerParameter /textParameter 
   
 refIdParameter  
   =  "refid=" quote ref_id:refid quote {
@@ -72,6 +72,17 @@ refIdParameter
     anywhereFootnote.original_ref_id = anywhereFootnote.ref_id
     return anywhereFootnote
   }
+  
+markerParameter  
+  =  "marker=" quote marker_char:[\*\@\+\#\&\^\-\=] quote {
+    
+    if (anywhereFootnote === null) {
+       anywhereFootnote = new AnywhereFootnote()
+    }
+    
+    anywhereFootnote.foot_marker = marker_char.join('').trim()
+    return anywhereFootnote
+  }  
   
 textParameter   
   = text_param: (!refIdParameter [^\]])+ {
