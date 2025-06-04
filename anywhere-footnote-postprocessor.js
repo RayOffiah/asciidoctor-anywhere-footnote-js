@@ -38,8 +38,11 @@ function processInlines(lines) {
                 awFootnotes.forEach(footnote => {
                     
                     addFootNoteReferences(footnote)
-                    let footnote_string = `<a href='#${footnote.block_id}-${footnote.ref_id}-block' id='${footnote.block_id}-${footnote.ref_id}-ref' class="footnote" style="text-decoration: none"><sup>[${footnote.footnote_marker}]</sup></a>`
-                    line = replaceFootnoteTag(line, footnote_string)
+
+                    const idAttribute = footnote.text_parameter ? ` id='${footnote.block_id}-${footnote.ref_id}-ref'` : '';
+                    const footnote_string = `<a href='#${footnote.block_id}-${footnote.ref_id}-block'${idAttribute} class="footnote" style="text-decoration: none"><sup>[${footnote.footnote_marker}]</sup></a>`;
+                    line = replaceFootnoteTag(line, footnote_string);
+
                     footnote_list.push(footnote)
                     
                 })
@@ -84,7 +87,7 @@ function processBlocks(lines) {
                     // you're looking at a reference to an existing footnote.
 
                     if (footnote.text_parameter) {
-                        let new_line = `<a href='#${footnote.block_id}-${footnote.ref_id}-ref' id='${footnote.block_id}-${footnote.ref_id}-block' class="footnote" style="text-decoration: none"><sup>${footnote.footnote_marker}</sup></a> ${footnote.text_parameter}<br/> `
+                        let new_line = `<a href='#${footnote.block_id}-${footnote.ref_id}-ref' id='${footnote.block_id}-${footnote.ref_id}-block' class="footnote" style="text-decoration: none"><sup>[${footnote.footnote_marker}]</sup></a> ${footnote.text_parameter}<br/> `
                         new_lines.push(new_line)
                     }
 
@@ -111,14 +114,6 @@ function processBlocks(lines) {
     
 }
 
-function matchFootnoteBlock(string) {
-
-    const regex = /afnote::(.+?)\[\]/
-
-    let result = string.match(regex)
-    return result && result[1] ? result[1] : undefined
-}
-
 function addFootNoteReferences(footnote) {
 
     // First, find the highest footnote number. The easiest thing to do is 
@@ -127,20 +122,22 @@ function addFootNoteReferences(footnote) {
     let counter = numberOfFootnotesInBlock() + 1
 
     if (footnote.ref_id && !footnote.text_parameter) {
-        
+        // Reference to the existing footnote - use its marker and ref_id
         let referenced_footnote = getExistingFootnoteMarker(footnote_list, footnote.ref_id)
         footnote.footnote_marker = referenced_footnote.footnote_marker
         footnote.ref_id = referenced_footnote.ref_id
-    }
+    } 
     else {
+        // New footnote - set ref_id and marker
         footnote.ref_id = footnote.ref_id ? `${footnote.ref_id}-${counter}` : `${counter}`
+
+        // Set marker if not already defined
+        if (!footnote.footnote_marker) {
+            footnote.footnote_marker = `${counter}`;
+        }
     }
 
     
-    // Set default footnote marker if none exists
-    if (!footnote.footnote_marker) {
-        footnote.footnote_marker = `${counter}`;
-    }
 }
 
 function numberOfFootnotesInBlock() {
@@ -160,3 +157,10 @@ function replaceFootnoteTag(string,  replacement) {
     return string.replace(regex, replacement)
 }
 
+function matchFootnoteBlock(string) {
+
+    const regex = /afnote::(.+?)\[\]/
+
+    let result = string.match(regex)
+    return result && result[1] ? result[1] : undefined
+}
