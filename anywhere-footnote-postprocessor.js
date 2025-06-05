@@ -120,10 +120,11 @@ function addFootNoteReferences(footnote) {
     // just count the number of footnotes in each block
 
     let counter = numberOfFootnotesInBlock() + 1
-
+    
     if (footnote.ref_id && !footnote.text_parameter) {
         // Reference to the existing footnote - use its marker and ref_id
         let referenced_footnote = getExistingFootnoteMarker(footnote_list, footnote.ref_id)
+        
         footnote.footnote_marker = referenced_footnote.footnote_marker
         footnote.ref_id = referenced_footnote.ref_id
     } 

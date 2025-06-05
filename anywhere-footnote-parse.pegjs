@@ -56,51 +56,62 @@ id
   =  [^\[]+
   
 parameter_list  
-  = parameter (__ "," __ parameter)*
+  = textParameter / attributedParameters
 
-parameter  
-  = refIdParameter / markerParameter /textParameter 
-  
-refIdParameter  
-  =  "refid=" quote ref_id:refid quote {
-    
-    if (anywhereFootnote === null) {
-       anywhereFootnote = new AnywhereFootnote()
-    }
-    
-    anywhereFootnote.ref_id = ref_id.join('').trim()
-    anywhereFootnote.original_ref_id = anywhereFootnote.ref_id
-    return anywhereFootnote
-  }
-  
-markerParameter  
-  =  "marker=" quote marker_char:[\*\@\+\#\&\^\-\=] quote {
-    
-    if (anywhereFootnote === null) {
-       anywhereFootnote = new AnywhereFootnote()
-    }
-    
-    anywhereFootnote.foot_marker = marker_char.join('').trim()
-    return anywhereFootnote
-  }  
-  
 textParameter   
-  = text_param: (!refIdParameter [^\]])+ {
+  =  !attributedParameters text_param:[^\]]+ {
   
       if (anywhereFootnote === null) {
        anywhereFootnote = new AnywhereFootnote()
     }
     
-    anywhereFootnote.text_parameter = text_param.map(obj => obj[1]).join('').trim()
+    anywhereFootnote.text_parameter = text_param.join('').trim()
     return anywhereFootnote
   }
   
-refid           
-  = [^\\']+
   
-quote           
-  =  [\\']
+attributedParameters
+  = parameter (__ "," __ parameter)*
+parameter  
+  =   refIdParameter / markerParameter /refTextParameter
+  
+refIdParameter  
+  =  "refid=" value:quotedString {
+    
+    if (anywhereFootnote === null) {
+       anywhereFootnote = new AnywhereFootnote()
+    }
+    
+    anywhereFootnote.ref_id = value
+    anywhereFootnote.original_ref_id = anywhereFootnote.ref_id
+    return anywhereFootnote
+  }
+  
+markerParameter  
+  =  "marker=" value:quotedString {
+    
+    if (anywhereFootnote === null) {
+       anywhereFootnote = new AnywhereFootnote()
+    }
+    
+    anywhereFootnote.footnote_marker = value
+    return anywhereFootnote
+  }  
+  
+refTextParameter
+  = "reftext=" value:quotedString {
+  
+      if (anywhereFootnote === null) {
+         anywhereFootnote = new AnywhereFootnote()
+      }
+      
+      anywhereFootnote.text_parameter = value
+      return anywhereFootnote
+  }
   
 __
   = [ \t]*
 
+quotedString
+  = "'" chars:[^']* "'" { return chars.join(""); }
+  / '"' chars:[^"]* '"' { return chars.join(""); }
