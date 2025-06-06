@@ -78,10 +78,10 @@ afnote::first-block[]
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})
 
-        expect(converted_doc).toContain("<a href='#first-block-reference-1-block' id='first-block-reference-1-ref' class=\"footnote\" style=\"text-decoration: none\"><sup>[1]</sup></a>")
-        expect(converted_doc).toContain("<a href='#first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>[1]</sup></a>")
+        expect(converted_doc).toContain("<a href='#first-block-reference-1-block' id='first-block-reference-1-ref' class=\"footnote\" style=\"text-decoration: none\"><sup>1</sup></a>")
+        expect(converted_doc).toContain("<a href='#first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>1</sup></a>")
         
-        expect(converted_doc).toContain("<a href='#first-block-reference-1-ref' id='first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>[1]</sup></a> This is a footnote<br/> ")
+        expect(converted_doc).toContain("<a href='#first-block-reference-1-ref' id='first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>1</sup></a> This is a footnote<br/> ")
         
         expect(converted_doc).not.toContain("#first-block-reference-2-ref")
         writeFile("referencer.html", converted_doc)
@@ -106,11 +106,36 @@ afnote::first-block[]
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})
         
-        expect(converted_doc).toContain("<a href='#first-block-reference-1-ref' id='first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>[*]</sup></a> This is a footnote<br/>")
+        expect(converted_doc).toContain("<a href='#first-block-reference-1-ref' id='first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>*</sup></a> This is a footnote<br/>")
         writeFile("marker.html", converted_doc)
 
 
 
+    })
+
+
+    test('Using braces', () => {
+
+        let input_document = ` 
+
+= Test document
+
+This is a test document.
+It has two lines{empty}afnote:first-block[marker='*', refid='reference', reftext='This is a footnote', lbrace='{', rbrace='}'],  
+the last of which will contain a footnote{empty}afnote:first-block[refid='reference']
+And we have another sentence before the block
+
+afnote::first-block[]
+`
+
+        let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
+            extension_registry: registry})
+
+        expect(converted_doc).toContain("<a href='#first-block-reference-1-ref' id='first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>{*}</sup></a> This is a footnote<br/>")
+        writeFile("braces.html", converted_doc)
+
+
+        {}
     })
 
 

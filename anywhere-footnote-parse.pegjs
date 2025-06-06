@@ -13,6 +13,8 @@
       this.ref_id = ""
       this.original_ref_id = ""
       this.footnote_marker = ""
+      this.lbrace = ""
+      this.rbrace = ""
       
     }
     
@@ -73,7 +75,7 @@ textParameter
 attributedParameters
   = parameter (__ "," __ parameter)*
 parameter  
-  =   refIdParameter / markerParameter /refTextParameter
+  =   refIdParameter / markerParameter /refTextParameter / lbraceParameter / rbraceParameter
   
 refIdParameter  
   =  "refid=" value:quotedString {
@@ -109,6 +111,28 @@ refTextParameter
       return anywhereFootnote
   }
   
+lbraceParameter
+  = "lbrace=" value:quotedString {
+  
+      if (anywhereFootnote === null) {
+         anywhereFootnote = new AnywhereFootnote()
+      }
+      
+      anywhereFootnote.lbrace = value
+      return anywhereFootnote
+  }  
+  
+  
+rbraceParameter
+= "rbrace=" value:quotedString {
+
+    if (anywhereFootnote === null) {
+       anywhereFootnote = new AnywhereFootnote()
+    }
+    
+    anywhereFootnote.rbrace = value
+    return anywhereFootnote
+} 
 __
   = [ \t]*
 
