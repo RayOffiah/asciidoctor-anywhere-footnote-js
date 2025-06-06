@@ -25,7 +25,10 @@ afnote::first-block[]
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})
-
+        
+        expect(converted_doc).toContain("href='#first-block-1-block'")
+        expect(converted_doc).toContain("href='#first-block-1-ref'")
+        
         writeFile("basic.html", converted_doc)
  
     })
@@ -45,6 +48,13 @@ afnote::first-block[]
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})
+
+        expect(converted_doc).toContain("href='#first-block-1-block'")
+        expect(converted_doc).toContain("href='#first-block-1-ref'")
+        
+        expect(converted_doc).toContain("href='#first-block-1-ref'")
+        expect(converted_doc).toContain("href='#first-block-2-ref'")
+        
         writeFile("two-lines.html", converted_doc)
         
     })
@@ -67,6 +77,13 @@ afnote::first-block[]
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})
+
+        expect(converted_doc).toContain("<a href='#first-block-reference-1-block' id='first-block-reference-1-ref' class=\"footnote\" style=\"text-decoration: none\"><sup>[1]</sup></a>")
+        expect(converted_doc).toContain("<a href='#first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>[1]</sup></a>")
+        
+        expect(converted_doc).toContain("<a href='#first-block-reference-1-ref' id='first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>[1]</sup></a> This is a footnote<br/> ")
+        
+        expect(converted_doc).not.toContain("#first-block-reference-2-ref")
         writeFile("referencer.html", converted_doc)
 
     })
@@ -88,6 +105,8 @@ afnote::first-block[]
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})
+        
+        expect(converted_doc).toContain("<a href='#first-block-reference-1-ref' id='first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>[*]</sup></a> This is a footnote<br/>")
         writeFile("marker.html", converted_doc)
 
 

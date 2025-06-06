@@ -2,7 +2,9 @@ require('@asciidoctor/core');
 
 const parse = require("./anywhere-footnote-parse").parse
 const _ = require('lodash')
-const footnote_list = require('./footnote-type').footnote_list
+
+
+let footnote_list = []
 
 module.exports = function (registry) {
     
