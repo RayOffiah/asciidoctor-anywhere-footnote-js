@@ -16,6 +16,9 @@ module.exports = function (registry) {
             
             output = lines.join('\n')
             
+            // reset the list
+            footnote_list.length = 0
+            
             return output
 
         })
