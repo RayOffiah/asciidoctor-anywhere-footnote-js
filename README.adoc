@@ -58,11 +58,9 @@ but you can wrap the number in braces by setting the `lbrace` and `rbrace` param
 +
 TIP: You don't have to use both parameters. If you set `rbrace=")"`, for example, you can footnote marked like this: `1)`
 
-=== Limitations
+And now for the caveats:
 
-Although this is an AsciiDoc extension, it will only work with HTML as the final output. 
-It has been designed primarily to work with Antora. Once the AsciiDoc specification has been completed, 
-we will hopefully look at a version that outputs pure AsciiDoc.
+WARNING: In implementing this processor, I've broken th
 
 
 

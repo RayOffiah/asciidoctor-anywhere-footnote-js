@@ -8,20 +8,21 @@ let footnote_list = []
 
 module.exports = function (registry) {
     
-    registry.postprocessor(function () {
+    registry.preprocessor(function () {
         
-        this.process((document, output) => {
+        this.process((document, reader) => {
             
-            let lines =output.split('\n')
+            let lines = reader.lines
+            
             lines = processInlines(lines)
             lines = processBlocks(lines)
             
-            output = lines.join('\n')
             
             // reset the list
             footnote_list.length = 0
             
-            return output
+            reader.lines = lines
+            return reader
 
         })
 
@@ -44,8 +45,8 @@ function processInlines(lines) {
                     
                     addFootNoteReferences(footnote)
 
-                    const idAttribute = footnote.text_parameter ? ` id='${footnote.block_id}-${footnote.ref_id}-ref'` : '';
-                    const footnote_string = `<a href='#${footnote.block_id}-${footnote.ref_id}-block'${idAttribute} class="footnote" style="text-decoration: none"><sup>${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}</sup></a>`;
+                    const idAttribute = footnote.text_parameter ? `${footnote.block_id}-${footnote.ref_id}-ref` : '';
+                    const footnote_string = `[[${idAttribute}]]xref:${footnote.block_id}-${footnote.ref_id}-block[^${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}^]`
                     line = replaceFootnoteTag(line, footnote_string);
 
                     footnote_list.push(footnote)
@@ -84,22 +85,18 @@ function processBlocks(lines) {
             if (check_line && check_line.length > 0) {
 
                 let footnote_group = groupedFootnotes[check_line]
-
-                new_lines.push(`<div class="paragraph">`)
+                
                 footnote_group.forEach(footnote => {
 
                     // Make sure you have text for the footnote. If you don't, then
                     // you're looking at a reference to an existing footnote.
 
                     if (footnote.text_parameter) {
-                        let new_line = `<a href='#${footnote.block_id}-${footnote.ref_id}-ref' id='${footnote.block_id}-${footnote.ref_id}-block' class="footnote" style="text-decoration: none"><sup>${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}</sup></a> ${footnote.text_parameter}<br/> `
+                        let new_line = `[[${footnote.block_id}-${footnote.ref_id}-block]]xref:${footnote.block_id}-${footnote.ref_id}-ref[^${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}^] ${footnote.text_parameter}` 
                         new_lines.push(new_line)
                     }
 
                 })
-
-                new_lines.push(`</div>`)
-                new_lines.push(`<br/>`)
 
             } else {
                 new_lines.push(line)
