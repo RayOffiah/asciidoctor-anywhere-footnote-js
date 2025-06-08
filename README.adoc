@@ -58,9 +58,10 @@ but you can wrap the number in braces by setting the `lbrace` and `rbrace` param
 +
 TIP: You don't have to use both parameters. If you set `rbrace=")"`, for example, you can footnote marked like this: `1)`
 
-And now for the caveats:
+And now for the warnings:
 
-WARNING: In implementing this processor, I've broken th
+WARNING: In implementing this processor, I've broken the first law of AsciiDoc: meddling with the preprocessor.
+It'll be fine, though. 
 
 
 
