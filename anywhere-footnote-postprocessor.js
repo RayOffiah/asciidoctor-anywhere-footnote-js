@@ -45,8 +45,8 @@ function processInlines(lines) {
                     
                     addFootNoteReferences(footnote)
 
-                    const idAttribute = footnote.text_parameter ? `${footnote.block_id}-${footnote.ref_id}-ref` : '';
-                    const footnote_string = `[[${idAttribute}]]xref:${footnote.block_id}-${footnote.ref_id}-block[^${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}^]`
+                    const idAttribute = footnote.text_parameter ? `[[${footnote.block_id}-${footnote.ref_id}-ref]]` : '';
+                    const footnote_string = `${idAttribute}xref:${footnote.block_id}-${footnote.ref_id}-block[^${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}^]`
                     line = replaceFootnoteTag(line, footnote_string);
 
                     footnote_list.push(footnote)
@@ -92,7 +92,7 @@ function processBlocks(lines) {
                     // you're looking at a reference to an existing footnote.
 
                     if (footnote.text_parameter) {
-                        let new_line = `[[${footnote.block_id}-${footnote.ref_id}-block]]xref:${footnote.block_id}-${footnote.ref_id}-ref[^${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}^] ${footnote.text_parameter}` 
+                        let new_line = `[#${footnote.block_id}-${footnote.ref_id}-block]#xref:${footnote.block_id}-${footnote.ref_id}-ref[^${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}^] ${footnote.text_parameter}#` 
                         new_lines.push(new_line)
                     }
 
