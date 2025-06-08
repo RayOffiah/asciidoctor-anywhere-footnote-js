@@ -1,0 +1,71 @@
+= Asciidoctor Anywhere Footnote
+
+== Introduction
+
+We've all been there: you're out in the pouring rain with a flat battery. 
+What's worse, when you pop the boot, you realize that you've left the portable battery in the garage.
+And to top off a perfect day, you remember that the AsciiDoc table you're working on, back at the office, is going to need footnotes. 
+And as far as you can see, there's no easy way to make the footnote block appear just after the table, 
+instead of being rendered at the bottom of the page.
+
+Well, there's little you can do about the rain and the flat battery, but there may be something you can do about the footnotes.
+
+== Anywhere Footnote
+
+This is a new macro (well, it's not really a macro; more on that later), 
+that you can use in most places that you'd be able to use `footnote`.
+The main difference is that it includes a parameter that it uses to reference the location of the footnote block:
+
+[source,asciidoc]
+----
+This is a piece of text{empty}afnote:footnote-block[This is the text of the footnote.]
+----
+
+The macro parameter (`footnote-block`) points to the `afnote` block where the footnote will be rendered:
+
+[source,asciidoc]
+----
+This is where the footnote block goes:
+
+afnote::footnote-block[]
+----
+
+NOTE: As you can see,the rendering `afnote` is a block macro, denoted by the double colon (`::`)
+
+All the footnotes with the same identifier will be rendered in the same block, 
+so you can have multiple footnote blocks on your page.
+
+The inline tag (single colon) supports extra parameters, as well as the text for the footnote.
+
+[source,asciidoc]
+----
+afnote:[Footnote text] // <.>
+afnote:[reftext="Footnote text", refid="footnote-id"] // <.>
+afnote:[refid="footnote-id"] <.>
+afnote:[reftext="Footnote text", marker="*"] <.>
+afnote:[reftext="Footnote text", lbrace="(" rbrace=")"] <.>
+
+----
+
+<.> The standard pattern. The text in brackets will be used as the footnote.
+<.> You can also set the footnote text using the `reftext` parameter.
+In this case we are also using the `refid` to set a reusable reference identifier.
+<.> The `refid` is used to reference an existing footnote so that multiple footnote references
+can point to the same footnote.
+<.> Normally, the footnotes are numbered per block, but if you wish, you can assign your own marker for any footnote.
+<.> The footnotes are marked with a plain number by default, 
+but you can wrap the number in braces by setting the `lbrace` and `rbrace` parameters.
++
+TIP: You don't have to use both parameters. If you set `rbrace=")"`, for example, you can footnote marked like this: `1)`
+
+=== Limitations
+
+Although this is an AsciiDoc extension, it will only work with HTML as the final output. 
+It has been designed primarily to work with Antora. Once the AsciiDoc specification has been completed, 
+we will hopefully look at a version that outputs pure AsciiDoc.
+
+
+
+
+
+

@@ -122,9 +122,9 @@ function processBlocks(lines) {
 function addFootNoteReferences(footnote) {
 
     // First, find the highest footnote number. The easiest thing to do is 
-    // just count the number of footnotes in each block
+    //  count the number of footnotes in each block
 
-    let counter = numberOfFootnotesInBlock() + 1
+    let counter = numberOfFootnotesInBlock(footnote.block_id) + 1
     
     if (footnote.ref_id && !footnote.text_parameter) {
         // Reference to the existing footnote - use its marker and ref_id
@@ -146,8 +146,8 @@ function addFootNoteReferences(footnote) {
     
 }
 
-function numberOfFootnotesInBlock() {
-    return footnote_list.filter(footnote => footnote.block_id === footnote.block_id).length
+function numberOfFootnotesInBlock(block_id) {
+    return footnote_list.filter(footnote => footnote.block_id === block_id).length
 }
 
 
@@ -159,13 +159,13 @@ function getExistingFootnoteMarker(footnote_list, refid) {
 
 function replaceFootnoteTag(string,  replacement) {
 
-    const regex = /afnote:.+?\[.+?\]/
+    const regex = /afnote:.+?\[.+?]/
     return string.replace(regex, replacement)
 }
 
 function matchFootnoteBlock(string) {
 
-    const regex = /afnote::(.+?)\[\]/
+    const regex = /afnote::(.+?)\[]/
 
     let result = string.match(regex)
     return result && result[1] ? result[1] : undefined

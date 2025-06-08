@@ -133,11 +133,30 @@ afnote::first-block[]
 
         expect(converted_doc).toContain("<a href='#first-block-reference-1-ref' id='first-block-reference-1-block' class=\"footnote\" style=\"text-decoration: none\"><sup>{*}</sup></a> This is a footnote<br/>")
         writeFile("braces.html", converted_doc)
-
-
-        {}
+        
     })
 
+    test('Multiple blocks', () => {
+        let input_document = `
+        
+= Test document
+
+This is a test document.
+It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote
+            
+But what is this? Yes, another set of footnotes in a different block{empty}afnote:second-block[This is a footnote for the second block]
+
+== First block of footnotes
+afnote::first-block[]
+        
+== Second block of footnotes
+afnote::second-block[]
+            `
+        let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
+            extension_registry: registry})
+
+        writeFile("two_blocks.html", converted_doc)
+    })
 
 
 })
