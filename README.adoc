@@ -3,12 +3,11 @@
 == Introduction
 
 We've all been there: you're out in the pouring rain with a flat battery. 
-What's worse, when you pop the boot, you realize that you've left the portable battery in the garage.
-And to top off a perfect day, you remember that the AsciiDoc table you're working on, back at the office, is going to need footnotes. 
-And as far as you can see, there's no easy way to make the footnote block appear just after the table, 
-instead of being rendered at the bottom of the page.
+What's worse, when you pop the boot, you realize that you've left the spare charging in the garage.
+And to top it, you have that  AsciiDoc table you're working on that's going to need footnotes 
+-- which are going to end up at the bottom of the page.
 
-Well, there's little you can do about the rain and the flat battery, but there may be something you can do about the footnotes.
+Well, there's little you can do about the rain and the flat battery, but there may be something you can do about the footnotes. …
 
 == Anywhere Footnote
 
@@ -57,6 +56,26 @@ can point to the same footnote.
 but you can wrap the number in braces by setting the `lbrace` and `rbrace` parameters.
 +
 TIP: You don't have to use both parameters. If you set `rbrace=")"`, for example, you can footnote marked like this: `1)`
+
+== Points of interest
+
+It may look like two macros (an inline macro and a block macro), 
+when in fact, it's just a single inline macro that's taking advantage of a peculiarity in the Asciidoctor API.
+
+If you have two macro calls that share the same name:
+
+[source, asciido]
+----
+afnote:my-block[This text]
+afnote::my-block[]
+----
+
+By happy coincidence, they will both be called by the same inline macro. 
+The only difference is that the second one will have a `target` of `:my-block` 
+(Note that the colon is considered part of the parameter value).
+
+I mention it just in case it's a bug in Asciidoctor that may get fixed in the future.
+
 
 
 
