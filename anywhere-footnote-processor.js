@@ -1,33 +1,102 @@
 require('@asciidoctor/core');
 
-const parse = require("./anywhere-footnote-parse").parse
 const _ = require('lodash')
 
+class AnywhereFootnote {
+
+    constructor() {
+
+        this.start = 0
+        this.end = 0
+        this.block_id = ""
+        this.text_parameter = ""
+        this.ref_id = ""
+        this.original_ref_id = ""
+        this.footnote_marker = ""
+        this.lbrace = ""
+        this.rbrace = ""
+
+    }
+}
 
 let footnote_list = []
 
 module.exports = function (registry) {
-    
-    registry.preprocessor(function () {
-        
-        this.process((document, reader) => {
+
+    registry.inlineMacro('afnote', function () {
+
+        const self = this
+
+        this.process((parent, target, attributes) => {
+
+            let footnote = new AnywhereFootnote()
+
+            // Small bug in the api. It needs to distinguish between inline and block
+            if (target.startsWith(':')) {
+
+                // Then we are looking at the block
+                // type: afnote::first-block[]
+
+                return processBlockMacro(target)
+            }
+
+            footnote.block_id = target
+
+            if (attributes['$positional'] &&attributes['$positional'][0]) {
+
+                footnote.text_parameter = attributes['$positional'][0]
+            }
+            else if (attributes['reftext']) {
+                footnote.text_parameter = attributes['reftext']
+            }
+            else {
+                footnote.text_parameter = ''
+            }
+
+            footnote.ref_id = attributes['refid'] ? attributes['refid'] : ''
+            footnote.original_ref_id = footnote.ref_id
+            footnote.footnote_marker = attributes['marker'] ? attributes['marker'] : ''
+            footnote.lbrace = attributes['lbrace'] ? attributes['lbrace'] : ''
+            footnote.rbrace = attributes['rbrace'] ? attributes['rbrace'] : ''
+
+
+            addFootNoteReferences(footnote)
+
+            footnote_list.push(footnote)
             
-            let lines = reader.lines
-            
-            lines = processInlines(lines)
-            lines = processBlocks(lines)
-            
-            
-            // reset the list
-            footnote_list.length = 0
-            
-            reader.lines = lines
-            return reader
+
+            return `[[${footnote.block_id}-${footnote.ref_id}-ref]]xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote"]`
 
         })
 
+
+        function processBlockMacro(target) {
+
+            // Okay, the target will have an extra ':' character
+            // that will need to be removed.
+            let block_id = target.substring(1)
+
+            let groupedFootnotes = _.groupBy(footnote_list, 'block_id')
+            let footnote_group = groupedFootnotes[block_id]
+
+            let footnote_block = ''
+
+            footnote_group.forEach(footnote => {
+                
+                // You only need a footnote block entry if you have some text for it.
+                // Otherwise, the footnote is referencing another footnote.
+                if (footnote.text_parameter) {
+                    footnote_block += `xref:${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote"][[${footnote.block_id}-${footnote.ref_id}-block]] ${footnote.text_parameter} +\n`
+                }
+            })
+
+
+            return footnote_block
+        }
+
     })
 }
+
 
 function processInlines(lines) {
     

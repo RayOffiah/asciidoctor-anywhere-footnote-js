@@ -7,7 +7,7 @@ describe('Test the preprocessor', () => {
 
     beforeEach(() => {
         registry = asciidoctor.Extensions.create();
-        require('../anywhere-footnote-postprocessor')(registry);
+        require('../anywhere-footnote-processor')(registry);
     });
     
 
@@ -16,6 +16,17 @@ describe('Test the preprocessor', () => {
         let input_document = ` 
 
 = Test document
+
+++++
+<style>
+  .anywhere-footnote  {
+    vertical-align: super;
+    font-size: 75%;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+++++
 
 This is a test document.
 It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote
@@ -36,6 +47,17 @@ afnote::first-block[]
         let input_document = ` 
 
 = Test document
+
+++++
+<style>
+  .anywhere-footnote  {
+    vertical-align: super;
+    font-size: 75%;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+++++
 
 This is a test document.
 It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote{empty}afnote:first-block[This a second footnote]. And we have another sentence before the block
@@ -58,6 +80,17 @@ afnote::first-block[]
 
 = Test document
 
+++++
+<style>
+  .anywhere-footnote  {
+    vertical-align: super;
+    font-size: 75%;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+++++
+
 This is a test document.
 It has two lines{empty}afnote:first-block[refid='reference', reftext='This is a footnote'], 
 the last of which will contain a footnote{empty}afnote:first-block[refid='reference']
@@ -79,6 +112,17 @@ afnote::first-block[]
         let input_document = ` 
 
 = Test document
+
+++++
+<style>
+  .anywhere-footnote  {
+    vertical-align: super;
+    font-size: 75%;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+++++
 
 This is a test document.
 It has two lines{empty}afnote:first-block[marker='*', refid='reference', reftext='This is a footnote'], 
@@ -104,6 +148,17 @@ afnote::first-block[]
 
 = Test document
 
+++++
+<style>
+  .anywhere-footnote  {
+    vertical-align: super;
+    font-size: 75%;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+++++
+
 This is a test document.
 It has two lines{empty}afnote:first-block[marker='*', refid='reference', reftext='This is a footnote', lbrace='{', rbrace='}'],  
 the last of which will contain a footnote{empty}afnote:first-block[refid='reference']
@@ -123,6 +178,17 @@ afnote::first-block[]
         let input_document = `
         
 = Test document
+
+++++
+<style>
+  .anywhere-footnote  {
+    vertical-align: super;
+    font-size: 75%;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+++++
 
 This is a test document.
 It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote
