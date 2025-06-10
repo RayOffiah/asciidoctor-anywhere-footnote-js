@@ -79,7 +79,7 @@ module.exports = function (registry) {
             let groupedFootnotes = _.groupBy(footnote_list, 'block_id')
             let footnote_group = groupedFootnotes[block_id]
 
-            let footnote_block = ''
+            let footnote_block = `__________________________ +\n`
 
             footnote_group.forEach(footnote => {
                 
