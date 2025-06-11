@@ -208,6 +208,117 @@ afnote::second-block[]
     })
 
 
+
+    test('Tables', () => {
+        let input_document = `
+        
+= Test document
+
+++++
+<style>
+  .anywhere-footnote  {
+    vertical-align: super;
+    font-size: 75%;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+++++
+
+This is a test document for tables.
+
+
+.Sample Table Title
+[cols="1,2,2", options="header"]
+|===
+|ID |Name |Description
+
+|1
+|Product Aafnote:first-block[This is the first footnote]
+|High-quality widget with advanced features{empty}afnote:first-block[This is the second]
+
+|2
+|Product B
+|Budget-friendly solution for everyday use
+
+|3
+|Product C
+|Premium option with extended warranty
+|===
+
+.Quarterly Sales Report 2025
+[cols="1,2,1,1,1", options="header"]
+|===
+|Quarter |Product |Units Sold |Revenue ($) |Profit Margin (%)
+
+|Q1
+|Smartphone Xafnote:second-block[This is for the second block.]
+|5,420
+|$1,084,000
+|32.5
+
+|Q1
+|Laptop Pro
+|1,875
+|$2,250,000
+|28.7
+
+|Q1
+|Smart Watch
+|3,650
+|$729,000
+|41.2
+
+|Q2
+|Smartphone X
+|6,780
+|$1,356,000afnote:second-block[Pricey!]
+|33.8
+
+|Q2
+|Laptop Pro
+|2,140
+|$2,568,000
+|29.4
+
+|Q2
+|Smart Watch
+|4,290
+|$858,000
+|42.1
+
+|Q3
+|Smartphone X
+|7,890
+|$1,578,000
+|34.2
+
+|Q3
+|Laptop Pro
+|2,560
+|$3,072,000
+|30.1
+
+|Q3
+|Smart Watch
+|5,130
+|$1,026,000
+|43.5
+|===
+
+== First block of footnotes
+afnote::first-block[]
+        
+== Second block of footnotes
+afnote::second-block[]
+            `
+        let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
+            extension_registry: registry})
+
+        writeFile("two_tables.html", converted_doc)
+    })
+
+
 })
 
 

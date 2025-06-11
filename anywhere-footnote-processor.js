@@ -78,6 +78,11 @@ module.exports = function (registry) {
 
             let groupedFootnotes = _.groupBy(footnote_list, 'block_id')
             let footnote_group = groupedFootnotes[block_id]
+            
+            if (!footnote_group) {
+                
+                throw new Error(`No footnotes found for block: ${block_id}`)
+            }
 
             let footnote_block = `__________________________ +\n`
 
