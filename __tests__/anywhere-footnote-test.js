@@ -31,7 +31,7 @@ describe('Test the preprocessor', () => {
 This is a test document.
 It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote
 
-afnote::first-block[]
+afnote:first-block[]
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
@@ -62,7 +62,7 @@ afnote::first-block[]
 This is a test document.
 It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote{empty}afnote:first-block[This a second footnote]. And we have another sentence before the block
 
-afnote::first-block[]
+afnote:first-block[]
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
@@ -96,7 +96,7 @@ It has two lines{empty}afnote:first-block[refid='reference', reftext='This is a 
 the last of which will contain a footnote{empty}afnote:first-block[refid='reference']
 And we have another sentence before the block
 
-afnote::first-block[]
+afnote:first-block[]
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
@@ -129,7 +129,7 @@ It has two lines{empty}afnote:first-block[marker='*', refid='reference', reftext
 the last of which will contain a footnote{empty}afnote:first-block[refid='reference']
 And we have another sentence before the block
 
-afnote::first-block[]
+afnote:first-block[]
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
@@ -164,7 +164,7 @@ It has two lines{empty}afnote:first-block[marker='*', refid='reference', reftext
 the last of which will contain a footnote{empty}afnote:first-block[refid='reference']
 And we have another sentence before the block
 
-afnote::first-block[]
+afnote:first-block[]
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
@@ -196,10 +196,10 @@ It has two lines{empty}afnote:first-block[This is a footnote], the last of which
 But what is this? Yes, another set of footnotes in a different block{empty}afnote:second-block[This is a footnote for the second block]
 
 == First block of footnotes
-afnote::first-block[]
+afnote:first-block[]
         
 == Second block of footnotes
-afnote::second-block[]
+afnote:second-block[]
             `
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})
@@ -307,10 +307,10 @@ This is a test document for tables.
 |===
 
 == First block of footnotes
-afnote::first-block[]
+afnote:first-block[]
         
 == Second block of footnotes
-afnote::second-block[]
+afnote:second-block[]
             `
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})

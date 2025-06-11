@@ -26,10 +26,10 @@ The macro parameter (`footnote-block`) points to the `afnote` block where the fo
 ----
 This is where the footnote block goes:
 
-afnote::footnote-block[]
+afnote:footnote-block[]
 ----
 
-NOTE: As you can see,the rendering `afnote` is a block macro, denoted by the double colon (`::`)
+NOTE: As you can see,the rendering `afnote` is an inline macro, denoted by a single colon (`:`)
 
 All the footnotes with the same identifier will be rendered in the same block, 
 so you can have multiple footnote blocks on your page.
@@ -56,30 +56,4 @@ can point to the same footnote.
 but you can wrap the number in braces by setting the `lbrace` and `rbrace` parameters.
 +
 TIP: You don't have to use both parameters. If you set `rbrace=")"`, for example, you can footnote marked like this: `1)`
-
-== Points of interest
-
-It may look like two macros (an inline macro and a block macro), 
-when in fact, it's just a single inline macro that's taking advantage of a peculiarity in the Asciidoctor API.
-
-If you have two macro calls that share the same name:
-
-[source, asciido]
-----
-afnote:my-block[This text]
-afnote::my-block[]
-----
-
-By happy coincidence, they will both be called by the same inline macro. 
-The only difference is that the second one will have a `target` of `:my-block` 
-(Note that the colon is considered part of the parameter value).
-
-I mention it just in case it's a bug in Asciidoctor that may get fixed in the future.
-
-
-
-
-
-
-
 

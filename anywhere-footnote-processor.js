@@ -32,10 +32,10 @@ module.exports = function (registry) {
             let footnote = new AnywhereFootnote()
 
             // Small bug in the api. It needs to distinguish between inline and block
-            if (target.startsWith(':')) {
+            if (_.isEmpty(attributes)) {
 
                 // Then we are looking at the block
-                // type: afnote::first-block[]
+                // type: afnote:first-block[]
 
                 return processBlockMacro(target)
             }
@@ -71,10 +71,8 @@ module.exports = function (registry) {
 
 
         function processBlockMacro(target) {
-
-            // Okay, the target will have an extra ':' character
-            // that will need to be removed.
-            let block_id = target.substring(1)
+            
+            let block_id = target
 
             let groupedFootnotes = _.groupBy(footnote_list, 'block_id')
             let footnote_group = groupedFootnotes[block_id]
