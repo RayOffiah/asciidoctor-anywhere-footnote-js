@@ -4,8 +4,8 @@
 
 We've all been there: you're out in the pouring rain with a flat battery. 
 What's worse, when you pop the boot, you realize that you've left the spare charging in the garage.
-And to top it, you have that  AsciiDoc table you're working on that's going to need footnotes 
--- which are going to end up at the bottom of the page.
+And to top it all, you still have that  AsciiDoc table you're working on that's going to need footnotes 
+-- and it's a real bind to make them show up near the table, instead of right at the end of the page.
 
 Well, there's little you can do about the rain and the flat battery, but there may be something you can do about the footnotes. …
 
@@ -38,11 +38,11 @@ The inline tag (single colon) supports extra parameters, as well as the text for
 
 [source,asciidoc]
 ----
-afnote:[Footnote text] // <.>
-afnote:[reftext="Footnote text", refid="footnote-id"] // <.>
-afnote:[refid="footnote-id"] <.>
-afnote:[reftext="Footnote text", marker="*"] <.>
-afnote:[reftext="Footnote text", lbrace="(" rbrace=")"] <.>
+afnote:my-block[Footnote text] // <.>
+afnote:my-block[reftext="Footnote text", refid="footnote-id"] // <.>
+afnote:my-block[refid="footnote-id"] <.>
+afnote:my-block[reftext="Footnote text", marker="*"] <.>
+afnote:my-block[reftext="Footnote text", lbrace="(" rbrace=")"] <.>
 
 ----
 

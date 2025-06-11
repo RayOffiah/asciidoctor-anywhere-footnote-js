@@ -311,6 +311,24 @@ afnote:first-block[]
         
 == Second block of footnotes
 afnote:second-block[]
+
+
+.Sample Product Comparison
+[cols="1,1,1,1"]
+|===
+|Product |Price ($) |Rating (1-5) |Stock Status
+
+|Premium Headphonesafnote:mid-block[Special offer!] |249.99 |4.7 |In Stock
+
+|Wireless Speaker |129.95 |4.2 |Limited
+
+4+|afnote:mid-block[]
+
+|Smart Watch |199.50 |4.5 |In Stock
+
+|Bluetooth Earbuds |89.99 |4.0 |Out of Stock
+|===
+
             `
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
             extension_registry: registry})
