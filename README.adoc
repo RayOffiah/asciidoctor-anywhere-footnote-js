@@ -11,8 +11,7 @@ Well, there's little you can do about the rain and the flat battery, but there m
 
 == Anywhere Footnote
 
-This is a new macro (well, it's not really a macro; more on that later), 
-that you can use in most places that you'd be able to use `footnote`.
+This is an inline macro that you can use in most places that you'd be able to use `footnote`.
 The main difference is that it includes a parameter that it uses to reference the location of the footnote block:
 
 [source,asciidoc]

@@ -1,5 +1,6 @@
 const asciidoctor = require('@asciidoctor/core')()
 const fs = require('fs');
+const { describe, test, expect } =require('@jest/globals') ;
 
 describe('Test the preprocessor', () => {
     
@@ -12,7 +13,8 @@ describe('Test the preprocessor', () => {
     
 
     test('Load basic file', () => {
-
+        
+       // noinspection SpellCheckingInspection
         let input_document = ` 
 
 = Test document
@@ -43,7 +45,8 @@ afnote:first-block[]
 
 
     test('Two footnotes on the same line', () => {
-
+        
+        // noinspection SpellCheckingInspection
         let input_document = ` 
 
 = Test document
@@ -76,6 +79,7 @@ afnote:first-block[]
 
     test('Two footnotes — the second on references the first', () => {
 
+        // noinspection SpellCheckingInspection GrammarInspection
         let input_document = ` 
 
 = Test document
@@ -109,6 +113,7 @@ afnote:first-block[]
 
     test('Using reference marks', () => {
 
+        // noinspection SpellCheckingInspection GrammarInspection
         let input_document = ` 
 
 = Test document
@@ -144,6 +149,7 @@ afnote:first-block[]
 
     test('Using braces', () => {
 
+        // noinspection SpellCheckingInspection GrammarInspection
         let input_document = ` 
 
 = Test document
@@ -175,6 +181,8 @@ afnote:first-block[]
     })
 
     test('Multiple blocks', () => {
+
+        // noinspection SpellCheckingInspection GrammarInspection
         let input_document = `
         
 = Test document

@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@asciidoctor/core": "^2.2.6",
+    "@jest/globals": "^30.0.0",
     "lodash": "^4.17.21",
     "peggy": "^5.0.2"
   }
