@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest"
   },
-  "keywords": ['asciidoc','asciidoctor', 'footnotes'],
+  "keywords": ["asciidoc","asciidoctor", "footnotes"],
   "author": "Ray Offiah",
   "homepage": "https://github.com/RayOffiah/asciidoctor-anywhere-footnote-js#README.adoc",
   "repository": {
