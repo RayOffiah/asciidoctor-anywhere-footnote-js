@@ -50,8 +50,8 @@ afnote:my-block[reftext="Footnote text", lbrace="(" rbrace=")"] (5)
 4. Normally, the footnotes are numbered per block, but if you wish, you can assign your own marker for any footnote.
 5. The footnotes are marked with a plain number by default, but you can wrap the number in braces by setting the `lbrace` and `rbrace` parameters.
 
-   > [!TIP] 
-   > You don't have to use both parameters. If you set `rbrace=")"`, for example, you can footnote marked like this: `1)`
+> [!TIP] 
+> You don't have to use both parameters. If you set `rbrace=")"`, for example, you can footnote marked like this: `1)`
 
 ## The Stylesheet
 
