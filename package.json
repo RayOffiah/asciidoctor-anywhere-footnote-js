@@ -1,25 +1,28 @@
 {
   "name": "asciidoctor-anywhere-footnote",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Allows you to put footnote blocks anywhere on the page.",
-  "main": "asciidoctor-anywhere-footnote.ts",
+  "main": "asciidoctor-anywhere-footnote.js",
   "scripts": {
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ['asciidoc','asciidoctor', 'footnotes'],
+  "author": "Ray Offiah",
+  "homepage": "https://github.com/RayOffiah/asciidoctor-anywhere-footnote-js#README.adoc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RayOffiah/asciidoctor-anywhere-footnote-js"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^28.1.8",
     "@types/lodash": "^4.17.17",
     "@types/node": "^22.15.21",
     "jest": "^28.1.0",
-    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@asciidoctor/core": "^2.2.6",
     "@jest/globals": "^30.0.0",
     "lodash": "^4.17.21",
-    "peggy": "^5.0.2"
   }
 }
