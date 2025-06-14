@@ -15,7 +15,7 @@ This is an inline macro that you can use in most places that you'd be able to us
 The main difference is that it includes a parameter that it uses to reference the location of the footnote block:
 
 ```asciidoc
-This is a piece of text{}afnote:footnote-block[This is the text of the footnote.]
+This is a piece of text{empty}afnote:footnote-block[This is the text of the footnote.]
 ```
 
 
