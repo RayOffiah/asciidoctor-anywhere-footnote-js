@@ -64,7 +64,7 @@ module.exports = function (registry) {
             footnote_list.push(footnote)
             
 
-            return `[[${footnote.block_id}-${footnote.ref_id}-ref]]xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote"]`
+            return `[[${footnote.block_id}-${footnote.ref_id}-ref]]xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote-marker"]`
 
         })
 
@@ -84,7 +84,7 @@ module.exports = function (registry) {
             let footnote_block = ''
             
             if (!omit_separator && omit_separator !== 'false') {
-                footnote_block = `<hr class="footnote-separator"/>\n`
+                footnote_block = `<hr class="anywhere-footnote-separator"/>\n`
             }
                  
 
@@ -93,7 +93,7 @@ module.exports = function (registry) {
                 // You only need a footnote block entry if you have some text for it.
                 // Otherwise, the footnote is referencing another footnote.
                 if (footnote.text_parameter) {
-                    footnote_block += `xref:${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote"][[${footnote.block_id}-${footnote.ref_id}-block]] ${footnote.text_parameter} +\n`
+                    footnote_block += `xref:${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote-block"][[${footnote.block_id}-${footnote.ref_id}-block]] ${footnote.text_parameter} +\n`
                 }
             })
             

@@ -21,20 +21,25 @@ describe('Test the processor', () => {
 
 ++++
 <style>
-  .anywhere-footnote  {
+.anywhere-footnote-marker  {
     vertical-align: super;
-    font-size: 75%;
-    font-weight: bold;
+    font-size: 80%;
     text-decoration: none;
-  }
-  
-  hr.footnote-separator
- {
-    margin-left: 0; 
+}
+
+.anywhere-footnote-block  {
+    vertical-align: super;
+    font-size: 80%;
+    text-decoration: none;
+}
+
+hr.footnote-separator
+{
+    margin-left: 0;
     margin-right: auto;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
     width: 100px;
-    
+
 }
 </style>
 ++++

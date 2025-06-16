@@ -59,10 +59,13 @@ The footnotes and the footnote block are rendered in HTML with an attached style
 It's included here for reference:
 
 ```css
-.anywhere-footnote  {
+.anywhere-footnote-marker  {
     vertical-align: super;
-    font-size: 75%;
-    font-weight: bold;
+    text-decoration: none;
+}
+
+.anywhere-footnote-block  {
+    vertical-align: super;
     text-decoration: none;
 }
 
