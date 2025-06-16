@@ -52,7 +52,7 @@ module.exports = function (registry) {
                 footnote.text_parameter = ''
             }
 
-            footnote.ref_id = attributes['ref_id'] ? attributes['ref_id'] : ''
+            footnote.ref_id = attributes['refid'] ? attributes['refid'] : ''
             footnote.original_ref_id = footnote.ref_id
             footnote.footnote_marker = attributes['marker'] ? attributes['marker'] : ''
             footnote.lbrace = attributes['lbrace'] ? attributes['lbrace'] : ''
@@ -93,7 +93,7 @@ module.exports = function (registry) {
                 // You only need a footnote block entry if you have some text for it.
                 // Otherwise, the footnote is referencing another footnote.
                 if (footnote.text_parameter) {
-                    footnote_block += `xref:${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote-block"][[${footnote.block_id}-${footnote.ref_id}-block]] ${footnote.text_parameter} +\n`
+                    footnote_block += `xref:${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote-marker"][[${footnote.block_id}-${footnote.ref_id}-block]] ${footnote.text_parameter} +\n`
                 }
             })
             

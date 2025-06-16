@@ -20,28 +20,7 @@ describe('Test the processor', () => {
 = Test document
 
 ++++
-<style>
-.anywhere-footnote-marker  {
-    vertical-align: super;
-    font-size: 80%;
-    text-decoration: none;
-}
-
-.anywhere-footnote-block  {
-    vertical-align: super;
-    font-size: 80%;
-    text-decoration: none;
-}
-
-hr.footnote-separator
-{
-    margin-left: 0;
-    margin-right: auto;
-    margin-bottom: 10px;
-    width: 100px;
-
-}
-</style>
+<link rel="stylesheet" href="anywhere-footnote.css"/>
 ++++
 
 This is a test document.
@@ -66,23 +45,7 @@ afnote:first-block[omit-separator="true"]
 = Test document
 
 ++++
-<style>
-  .anywhere-footnote  {
-    vertical-align: super;
-    font-size: 75%;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  
-  hr.footnote-separator
- {
-    margin-left: 0; 
-    margin-right: auto;
-    margin-bottom: 10px; 
-    width: 100px;
-    
-}
-</style>
+<link rel="stylesheet" href="anywhere-footnote.css"/>
 ++++
 
 This is a test document.
@@ -108,23 +71,7 @@ afnote:first-block[]
 = Test document
 
 ++++
-<style>
-  .anywhere-footnote  {
-    vertical-align: super;
-    font-size: 75%;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  
-  hr.footnote-separator
- {
-    margin-left: 0; 
-    margin-right: auto;
-    margin-bottom: 10px; 
-    width: 100px;
-    
-}
-</style>
+<link rel="stylesheet" href="anywhere-footnote.css"/>
 ++++
 
 This is a test document.
@@ -151,23 +98,7 @@ afnote:first-block[]
 = Test document
 
 ++++
-<style>
-  .anywhere-footnote  {
-    vertical-align: super;
-    font-size: 75%;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  
-  hr.footnote-separator
- {
-    margin-left: 0; 
-    margin-right: auto;
-    margin-bottom: 10px; 
-    width: 100px;
-    
-}
-</style>
+<link rel="stylesheet" href="anywhere-footnote.css"/>
 ++++
 
 This is a test document.
@@ -196,23 +127,7 @@ afnote:first-block[]
 = Test document
 
 ++++
-<style>
-  .anywhere-footnote  {
-    vertical-align: super;
-    font-size: 75%;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  
-  hr.footnote-separator
- {
-    margin-left: 0; 
-    margin-right: auto;
-    margin-bottom: 10px; 
-    width: 100px;
-    
-}
-</style>
+<link rel="stylesheet" href="anywhere-footnote.css"/>
 ++++
 
 This is a test document.
@@ -238,23 +153,7 @@ afnote:first-block[]
 = Test document
 
 ++++
-<style>
-  .anywhere-footnote  {
-    vertical-align: super;
-    font-size: 75%;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  
-  hr.footnote-separator
- {
-    margin-left: 0; 
-    margin-right: auto;
-    margin-bottom: 10px; 
-    width: 100px;
-    
-}
-</style>
+<link rel="stylesheet" href="anywhere-footnote.css"/>
 ++++
 
 This is a test document.
@@ -282,23 +181,7 @@ afnote:second-block[]
 = Test document
 
 ++++
-<style>
-  .anywhere-footnote  {
-    vertical-align: super;
-    font-size: 75%;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  
-  hr.footnote-separator
- {
-    margin-left: 0; 
-    margin-right: auto;
-    margin-bottom: 10px; 
-    width: 100px;
-    
-}
-</style>
+<link rel="stylesheet" href="anywhere-footnote.css"/>
 ++++
 
 This is a test document for tables.
