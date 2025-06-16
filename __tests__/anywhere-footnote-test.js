@@ -2,7 +2,7 @@ const asciidoctor = require('@asciidoctor/core')()
 const fs = require('fs');
 const { describe, test, expect } =require('@jest/globals') ;
 
-describe('Test the preprocessor', () => {
+describe('Test the processor', () => {
     
     let registry;
 
@@ -27,13 +27,22 @@ describe('Test the preprocessor', () => {
     font-weight: bold;
     text-decoration: none;
   }
+  
+  hr.footnote-separator
+ {
+    margin-left: 0; 
+    margin-right: auto;
+    margin-bottom: 10px; 
+    width: 100px;
+    
+}
 </style>
 ++++
 
 This is a test document.
 It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote
 
-afnote:first-block[]
+afnote:first-block[omit-separator="true"]
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
@@ -59,6 +68,15 @@ afnote:first-block[]
     font-weight: bold;
     text-decoration: none;
   }
+  
+  hr.footnote-separator
+ {
+    margin-left: 0; 
+    margin-right: auto;
+    margin-bottom: 10px; 
+    width: 100px;
+    
+}
 </style>
 ++++
 
@@ -92,6 +110,15 @@ afnote:first-block[]
     font-weight: bold;
     text-decoration: none;
   }
+  
+  hr.footnote-separator
+ {
+    margin-left: 0; 
+    margin-right: auto;
+    margin-bottom: 10px; 
+    width: 100px;
+    
+}
 </style>
 ++++
 
@@ -126,6 +153,15 @@ afnote:first-block[]
     font-weight: bold;
     text-decoration: none;
   }
+  
+  hr.footnote-separator
+ {
+    margin-left: 0; 
+    margin-right: auto;
+    margin-bottom: 10px; 
+    width: 100px;
+    
+}
 </style>
 ++++
 
@@ -162,6 +198,15 @@ afnote:first-block[]
     font-weight: bold;
     text-decoration: none;
   }
+  
+  hr.footnote-separator
+ {
+    margin-left: 0; 
+    margin-right: auto;
+    margin-bottom: 10px; 
+    width: 100px;
+    
+}
 </style>
 ++++
 
@@ -195,6 +240,15 @@ afnote:first-block[]
     font-weight: bold;
     text-decoration: none;
   }
+  
+  hr.footnote-separator
+ {
+    margin-left: 0; 
+    margin-right: auto;
+    margin-bottom: 10px; 
+    width: 100px;
+    
+}
 </style>
 ++++
 
@@ -230,6 +284,15 @@ afnote:second-block[]
     font-weight: bold;
     text-decoration: none;
   }
+  
+  hr.footnote-separator
+ {
+    margin-left: 0; 
+    margin-right: auto;
+    margin-bottom: 10px; 
+    width: 100px;
+    
+}
 </style>
 ++++
 
@@ -330,7 +393,7 @@ afnote:second-block[]
 
 |Wireless Speaker |129.95 |4.2 |Limited
 
-4+|afnote:mid-block[]
+4+|afnote:mid-block[omit-separator="true"]
 
 |Smart Watch |199.50 |4.5 |In Stock
 

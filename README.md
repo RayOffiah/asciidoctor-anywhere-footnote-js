@@ -65,4 +65,28 @@ It's included here for reference:
     font-weight: bold;
     text-decoration: none;
 }
+
+hr.footnote-separator
+{
+    margin-left: 0;
+    margin-right: auto;
+    margin-bottom: 10px;
+    width: 100px;
+
+}
 ```
+
+## Omitting the separator
+
+Normally, the footnote block is rendered with a short horizontal line above the footnotes:
+
+![footnote separator](footnote-separator.png "Footnote separator")
+
+To omit the separator, add the `omit-separator` attribute to the block tag.
+
+```asciidoc
+afnote:footnote-block[omit-separator="true"]
+```
+![Footnotes without separator](footnote-without-separator.png "Footnotes without separators")
+
+

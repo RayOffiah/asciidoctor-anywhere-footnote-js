@@ -23,8 +23,6 @@ let footnote_list = []
 module.exports = function (registry) {
 
     registry.inlineMacro('afnote', function () {
-
-        const self = this
         
         footnote_list.length = 0
 
@@ -33,17 +31,17 @@ module.exports = function (registry) {
             let footnote = new AnywhereFootnote()
 
             // Small bug in the api. It needs to distinguish between inline and block
-            if (_.isEmpty(attributes)) {
+            if (_.isEmpty(attributes) || attributes['omit-separator']) {
 
                 // Then we are looking at the block
                 // type: afnote:first-block[]
 
-                return processBlockMacro(target)
+                return processBlockMacro(target, attributes['omit-separator'])
             }
 
             footnote.block_id = target
 
-            if (attributes['$positional'] &&attributes['$positional'][0]) {
+            if (attributes['$positional'] && attributes['$positional'][0]) {
 
                 footnote.text_parameter = attributes['$positional'][0]
             }
@@ -71,7 +69,7 @@ module.exports = function (registry) {
         })
 
 
-        function processBlockMacro(target) {
+        function processBlockMacro(target, omit_separator) {
             
             let block_id = target
 
@@ -83,7 +81,12 @@ module.exports = function (registry) {
                 throw new Error(`No footnotes found for block: ${block_id}`)
             }
 
-            let footnote_block = `__________________________ +\n`
+            let footnote_block = ''
+            
+            if (!omit_separator && omit_separator !== 'false') {
+                footnote_block = `<hr class="footnote-separator"/>\n`
+            }
+                 
 
             footnote_group.forEach(footnote => {
                 
