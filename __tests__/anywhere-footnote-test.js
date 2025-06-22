@@ -14,7 +14,6 @@ describe('Test the processor', () => {
 
     test('Load basic file', () => {
         
-       // noinspection SpellCheckingInspection
         let input_document = ` 
 
 = Test document
@@ -24,9 +23,9 @@ describe('Test the processor', () => {
 ++++
 
 This is a test document.
-It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote
+It has two lines{empty}afnote:first-block[This is a footnote, lbrace='{empty}', rbrace='{empty}'], the last of which will contain a footnote
 
-afnote:first-block[omit-separator="true"]
+afnote:first-block[]
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,

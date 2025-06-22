@@ -5,8 +5,7 @@ const _ = require('lodash')
 class AnywhereFootnote {
 
     constructor() {
-
-        this.start = 0
+        
         this.block_id = ""
         this.text_parameter = ""
         this.ref_id = ""
@@ -36,7 +35,7 @@ module.exports = function (registry) {
                 // Then we are looking at the block
                 // type: afnote:first-block[]
 
-                return processBlockMacro(this, parent, target, attributes['omit-separator'])
+                return processFootnoteBlock(this, parent, target, attributes['omit-separator'])
             }
 
             footnote.block_id = target
@@ -55,8 +54,9 @@ module.exports = function (registry) {
             footnote.ref_id = attributes['refid'] ? attributes['refid'] : ''
             footnote.original_ref_id = footnote.ref_id
             footnote.footnote_marker = attributes['marker'] ? attributes['marker'] : ''
-            footnote.lbrace = attributes['lbrace'] ? attributes['lbrace'] : ''
-            footnote.rbrace = attributes['rbrace'] ? attributes['rbrace'] : ''
+            
+            footnote.lbrace = attributes['lbrace'] === undefined ? '&#91;' : attributes['lbrace']
+            footnote.rbrace = attributes['rbrace'] === undefined ? '&#93;' : attributes['rbrace']
 
 
             addFootNoteReferences(footnote)
@@ -73,7 +73,7 @@ module.exports = function (registry) {
         })
 
 
-        function processBlockMacro(self, parent, target, omit_separator) {
+        function processFootnoteBlock(self, parent, target, omit_separator) {
             
             let block_id = target
 
@@ -87,7 +87,8 @@ module.exports = function (registry) {
 
             let footnote_block = ''
             
-            if (!omit_separator && omit_separator !== 'false') {
+            if (omit_separator === undefined || omit_separator === 'false') {
+                
                 footnote_block = `<hr class="footnote-separator"/>\n\n`
             }
             else {
@@ -105,7 +106,7 @@ module.exports = function (registry) {
             
             return self.createInline(parent, 'quoted', footnote_block, {
                 attributes: {
-                    role: 'anywhere-footnote-block',
+                    role: 'anywhere-footnote-block'
                 }
             })
         }

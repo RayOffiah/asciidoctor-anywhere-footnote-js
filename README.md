@@ -48,10 +48,13 @@ afnote:my-block[reftext="Footnote text", lbrace="(" rbrace=")"] (5)
 2. You can also set the footnote text using the `reftext` parameter. In this case we are also using the `refid` to set a reusable reference identifier.
 3. The `refid` is used to reference an existing footnote so that multiple footnote references can point to the same footnote.
 4. Normally, the footnotes are numbered per block, but if you wish, you can assign your own marker for any footnote.
-5. The footnotes are marked with a plain number by default, but you can wrap the number in braces by setting the `lbrace` and `rbrace` parameters.
+5. As a default, the footnote markers are encased in square brackets. You can change this (to parentheses, for example) 
+by using the `lbrace` and/or `rbrace` parameters.
 
 > [!TIP] 
-> You don't have to use both parameters. If you set `rbrace=")"`, for example, you can footnote marked like this: `1)`
+> If you don't any kind of bracket encasing the footnote, then set both `lbrace` and `rbrace` to `{empty} or empty strings.`
+>
+> You don't have to use both parameters. If you set `lbrace={empyty}` and  `rbrace=")"`, for example, you can footnote marked like this: `1)`
 
 ## The Stylesheet
 
