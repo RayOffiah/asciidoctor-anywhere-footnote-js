@@ -95,4 +95,36 @@ afnote:footnote-block[omit-separator="true"]
 ```
 ![Footnotes without separator](footnote-without-separator.png "Footnotes without separators")
 
+## Alternative counting formats
+
+By default, the footnotes will be counted using the standard Arabic notion (1, 2, 3, …). 
+But other forms can be used by adding an attribute selector to your page:
+
+```asciidoc
+:afnote-format: alpha
+```
+The footnotes will use a single letter as a footnote marker.
+
+> [!WARNING] 
+> Do not use this format if you have more than 26 footnotes on your page. 
+
+You can also use roman numerals.
+
+```asciidoc
+:afnote-format: roman
+```
+
+> [!WARNING]
+> Do not use this format if you have more than 3999 footnotes on your page.
+> (Though if you did then I suspect footnote formatting would be the least of your problems)
+
+Omit the `afnote-format` attribute for standard arabic, or use
+
+```asciidoc
+:afnote-format: arabic
+```
+
+
+
+
 

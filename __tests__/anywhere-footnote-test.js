@@ -18,6 +18,8 @@ describe('Test the processor', () => {
 
 = Test document
 
+:afnote-format: roman
+
 ++++
 <link rel="stylesheet" href="anywhere-footnote.css"/>
 ++++

@@ -1,6 +1,8 @@
 require('@asciidoctor/core');
 
 const _ = require('lodash')
+const randomstring = require('randomstring')
+const romans = require('romans')
 
 class AnywhereFootnote {
 
@@ -9,7 +11,6 @@ class AnywhereFootnote {
         this.block_id = ""
         this.text_parameter = ""
         this.ref_id = ""
-        this.original_ref_id = ""
         this.footnote_marker = ""
         this.lbrace = ""
         this.rbrace = ""
@@ -18,6 +19,7 @@ class AnywhereFootnote {
 }
 
 let footnote_list = []
+let afnote_format = ''
 
 module.exports = function (registry) {
 
@@ -26,6 +28,17 @@ module.exports = function (registry) {
         footnote_list.length = 0
 
         this.process((parent, target, attributes) => {
+            
+            const document = parent.getDocument()
+            
+            //Now see if we have an afnote-format attribute
+            
+            if (document.getAttribute('afnote-format')) {
+                afnote_format = document.getAttribute('afnote-format')
+            }
+            else {
+                afnote_format = 'arabic'
+            }
 
             let footnote = new AnywhereFootnote()
 
@@ -51,20 +64,26 @@ module.exports = function (registry) {
                 footnote.text_parameter = ''
             }
 
-            footnote.ref_id = attributes['refid'] ? attributes['refid'] : ''
-            footnote.original_ref_id = footnote.ref_id
+            footnote.ref_id = attributes['refid'] ? attributes['refid'] : randomstring.generate(8)
             footnote.footnote_marker = attributes['marker'] ? attributes['marker'] : ''
             
             footnote.lbrace = attributes['lbrace'] === undefined ? '&#91;' : attributes['lbrace']
             footnote.rbrace = attributes['rbrace'] === undefined ? '&#93;' : attributes['rbrace']
-
-
+            
             addFootNoteReferences(footnote)
+            
+            // This odd bit of code is to ensure that we don't end up setting duplicate anchor ids
+            // for footnotes that reference other footnotes. In this case, the second footnote
+            // is assigned another random string, which means we won't be able to click to it
+            // from the footnote block.
+            let idString = footnote_list.some(item => item.ref_id === footnote.ref_id)
+            ? randomstring.generate(8) 
+                : `${footnote.block_id}-${footnote.ref_id}`
+            
+            let inline =  `[[${idString}-ref]]xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}]`
 
             footnote_list.push(footnote)
             
-            let inline =  `[[${footnote.block_id}-${footnote.ref_id}-ref]]xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}]`
-
             return this.createInline(parent, 'quoted', inline, {
                 attributes: {
                     role: 'anywhere-footnote-marker',
@@ -128,12 +147,10 @@ module.exports = function (registry) {
             footnote.ref_id = referenced_footnote.ref_id
         }
         else {
-            // New footnote - set ref_id and marker
-            footnote.ref_id = footnote.ref_id ? `${footnote.ref_id}-${counter}` : `${counter}`
 
             // Set marker if not already defined
             if (!footnote.footnote_marker) {
-                footnote.footnote_marker = `${counter}`;
+                footnote.footnote_marker = getFormattedNumber(counter, afnote_format)
             }
         }
     }
@@ -145,9 +162,19 @@ module.exports = function (registry) {
 
     function getExistingFootnoteMarker(footnote_list, refid) {
 
-        return footnote_list.find(footnote => footnote.original_ref_id === refid && footnote.text_parameter)
+        return footnote_list.find(footnote => footnote.ref_id === refid && footnote.text_parameter)
 
     }   
+    
+    function getFormattedNumber(number, format) {
+        
+        switch (format) {
+            case 'arabic': return String(number); 
+            case 'alpha' : return  ('a' + number - 1).toString()
+            case 'roman' : return romans.romanize(number)
+            default: return number.toString()
+        }
+    }
     
 }
 
