@@ -108,7 +108,9 @@ module.exports = function (registry) {
             
             if (omit_separator === undefined || omit_separator === 'false') {
                 
-                footnote_block = `<hr class="footnote-separator"/>\n\n`
+                
+                let separator = self.createBlock(parent, 'paragraph', '', {"role": "anywhere-footnote-hr-divider"})
+                footnote_block = separator.convert()
             }
             else {
                 footnote_block = `\n\n`
