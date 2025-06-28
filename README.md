@@ -62,23 +62,23 @@ The footnotes and the footnote block are rendered in HTML with an attached style
 It's included here for reference:
 
 ```css
-.anywhere-footnote-marker  {
+.anywhere-footnote-marker {
+    vertical-align: super;
+    font-size: 90%;
+    text-decoration: none;
+}
+
+.anywhere-footnote-block {
     vertical-align: super;
     text-decoration: none;
 }
 
-.anywhere-footnote-block  {
-    vertical-align: super;
-    text-decoration: none;
-}
-
-hr.footnote-separator
-{
-    margin-left: 0;
-    margin-right: auto;
-    margin-bottom: 10px;
-    width: 100px;
-
+.anywhere-footnote-hr-divider {
+    height: 1px;
+    background-color: #ccc; /* Standard gray color similar to default HR */
+    border: none;
+    margin: 0.5em 0; /* Standard HR margin */
+    width: 40%;
 }
 ```
 
