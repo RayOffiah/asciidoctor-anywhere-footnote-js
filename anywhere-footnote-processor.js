@@ -77,10 +77,9 @@ module.exports = function (registry) {
             // is assigned another random string, which means we won't be able to click to it
             // from the footnote block.
             let idString = footnote_list.some(item => item.ref_id === footnote.ref_id)
-            ? randomstring.generate(8) 
-                : `${footnote.block_id}-${footnote.ref_id}`
+            ? '' : `${footnote.block_id}-${footnote.ref_id}`
             
-            let inline =  `[[${idString}-ref]]xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}]`
+           let inline = createFootnoteReference(footnote, idString)
 
             footnote_list.push(footnote)
             
@@ -158,7 +157,10 @@ module.exports = function (registry) {
     }
     
     function numberOfFootnotesInBlock(block_id) {
-        return footnote_list.filter(footnote => footnote.block_id === block_id).length
+        
+        // Remember that you for generating the next footnote number, you only need to count the footnotes  
+        // that have a text parameter; the ones that don't are referencing an existing footnote.
+        return footnote_list.filter(footnote => footnote.block_id === block_id && footnote.text_parameter).length
     }
 
 
@@ -186,7 +188,13 @@ module.exports = function (registry) {
             default: return number.toString()
         }
     }
-    
+
+    function createFootnoteReference(footnote, idString) {
+        const baseXref = `xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}]`;
+
+        return idString ? `[[${idString}-ref]]${baseXref}` : baseXref;
+    }
+
 }
 
 
