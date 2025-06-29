@@ -178,11 +178,11 @@ module.exports = function (registry) {
             } 
             case 'alpha' : {
                 
-                if (number > 26) throw new Error('Alpha format only supports up to 26 footnotes')
+                if (number < 1 || number > 26) throw new Error('Alpha format only supports up to 26 footnotes')
                 return ('a' + number - 1).toString()
             }
             case 'roman' : {
-                if (number > 3999) throw new Error('Roman format only supports up to 3999 footnotes')
+                if (number < 1 || number > 3999) throw new Error('Roman format only supports up to 3999 footnotes')
                 return romans.romanize(number)
             }
             default: return number.toString()
