@@ -20,6 +20,7 @@ class AnywhereFootnote {
 
 let footnote_list = []
 let afnote_format = ''
+let block_reset = false
 
 module.exports = function (registry) {
 
@@ -40,6 +41,7 @@ module.exports = function (registry) {
                 afnote_format = 'arabic'
             }
 
+            
             let footnote = new AnywhereFootnote()
 
             // Small bug in the api. It needs to distinguish between inline and block
@@ -47,8 +49,9 @@ module.exports = function (registry) {
 
                 // Then we are looking at the block
                 // type: afnote:first-block[]
-
-                return processFootnoteBlock(this, parent, target, attributes['omit-separator'])
+                
+                let omit_separator =  attributes['omit-separator'].toLowerCase() === 'true' 
+                return processFootnoteBlock(this, parent, target, omit_separator)
             }
 
             footnote.block_id = target
@@ -105,14 +108,14 @@ module.exports = function (registry) {
 
             let footnote_block = ''
             
-            if (omit_separator === undefined || omit_separator === 'false') {
-                
-                
-                let separator = self.createBlock(parent, 'paragraph', '', {"role": "anywhere-footnote-hr-divider"})
-                footnote_block = separator.convert()
+            if (omit_separator) {
+
+                footnote_block = `\n\n`
+
             }
             else {
-                footnote_block = `\n\n`
+                let separator = self.createBlock(parent, 'paragraph', '', {"role": "anywhere-footnote-hr-divider"})
+                footnote_block = separator.convert()    
             }
             
             footnote_group.forEach(footnote => {

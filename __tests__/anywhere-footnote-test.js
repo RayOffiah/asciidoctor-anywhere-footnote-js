@@ -27,7 +27,7 @@ describe('Test the processor', () => {
 This is a test document.
 It has two lines{empty}afnote:first-block[This is a footnote, lbrace='{empty}', rbrace='{empty}'], the last of which will contain a footnote
 
-afnote:first-block[]
+afnote:first-block[omit-separator=true]
 `
 
         let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,

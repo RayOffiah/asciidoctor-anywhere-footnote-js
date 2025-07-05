@@ -4,8 +4,9 @@
 
 We've all been there: you're out in the pouring rain with a flat battery.
 What's worse, when you pop the boot, you realize that you've left the spare charging in the garage.
-And to top it all, you still have that AsciiDoc table you're working on that's going to need footnotes
--- and it's a real bind to make them show up near the table, instead of right at the end of the page.
+And to top it all, you still have that AsciiDoc table that's going to need a lot of footnotes.
+
+That's going to be a real bind if you want them to show up near the table, instead of right at the end of the page.
 
 Well, there's little you can do about the rain and the flat battery, but there may be something you can do about the footnotes. …
 
@@ -48,10 +49,10 @@ afnote:my-block[reftext="Footnote text", lbrace="(" rbrace=")"] (5)
 2. You can also set the footnote text using the `reftext` parameter. In this case we are also using the `refid` to set a reusable reference identifier.
 3. The `refid` is used to reference an existing footnote so that multiple footnote references can point to the same footnote.
 4. Normally, the footnotes are numbered per block, but if you wish, you can assign your own marker for any footnote.
-5. As a default, the footnote markers are encased in square brackets. You can change this (to parentheses, for example) 
-by using the `lbrace` and/or `rbrace` parameters.
+5. As a default, the footnote markers are encased in square brackets. You can change this (to parentheses, for example)
+   by using the `lbrace` and/or `rbrace` parameters.
 
-> [!TIP] 
+> [!TIP]
 > If you don't any kind of bracket encasing the footnote, then set both `lbrace` and `rbrace` to `{empty} or empty strings.`
 >
 > You don't have to use both parameters. If you set `lbrace={empyty}` and  `rbrace=")"`, for example, you can footnote marked like this: `1)`
@@ -62,23 +63,23 @@ The footnotes and the footnote block are rendered in HTML with an attached style
 It's included here for reference:
 
 ```css
-.anywhere-footnote-marker {
-    vertical-align: super;
-    font-size: 90%;
-    text-decoration: none;
-}
-
-.anywhere-footnote-block {
+.anywhere-footnote-marker  {
     vertical-align: super;
     text-decoration: none;
 }
 
-.anywhere-footnote-hr-divider {
-    height: 1px;
-    background-color: #ccc; /* Standard gray color similar to default HR */
-    border: none;
-    margin: 0.5em 0; /* Standard HR margin */
-    width: 40%;
+.anywhere-footnote-block  {
+    vertical-align: super;
+    text-decoration: none;
+}
+
+hr.footnote-separator
+{
+    margin-left: 0;
+    margin-right: auto;
+    margin-bottom: 10px;
+    width: 100px;
+
 }
 ```
 
@@ -97,7 +98,7 @@ afnote:footnote-block[omit-separator="true"]
 
 ## Alternative counting formats
 
-By default, the footnotes will be counted using the standard Arabic notion (1, 2, 3, …). 
+By default, the footnotes will be counted using the standard Arabic notion (1, 2, 3, …).
 But other forms can be used by adding an attribute selector to your page:
 
 ```asciidoc
@@ -105,8 +106,8 @@ But other forms can be used by adding an attribute selector to your page:
 ```
 The footnotes will use a single letter as a footnote marker.
 
-> [!WARNING] 
-> Do not use this format if you have more than 26 footnotes on your page. 
+> [!WARNING]
+> Do not use this format if you have more than 26 footnotes on your page.
 
 You can also use roman numerals.
 
@@ -122,6 +123,15 @@ Omit the `afnote-format` attribute for standard arabic, or use
 
 ```asciidoc
 :afnote-format: arabic
+```
+## Controlling the Count
+
+Normally, the footnotes are numbered page-wide: starting at 1 then continuing to the end of the page.
+If you prefer the count reset to be reset to 1 each time a new block is encountered,
+then put this near the top of the page (before the first footnote):
+
+```asciidoc
+:afnote-block-reset: true
 ```
 
 
