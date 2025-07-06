@@ -53,7 +53,7 @@ afnote:my-block[reftext="Footnote text", lbrace="(" rbrace=")"] (5)
    by using the `lbrace` and/or `rbrace` parameters.
 
 > [!TIP]
-> If you don't any kind of bracket encasing the footnote, then set both `lbrace` and `rbrace` to `{empty} or empty strings.`
+> If you don't want any kind of bracket encasing the footnote, then set both `lbrace` and `rbrace` to `{empty} or empty strings.`
 >
 > You don't have to use both parameters. If you set `lbrace={empyty}` and  `rbrace=")"`, for example, you can footnote marked like this: `1)`
 
@@ -133,6 +133,17 @@ then put this near the top of the page (before the first footnote):
 ```asciidoc
 :afnote-block-reset: true
 ```
+
+## Suppressing the separators globally
+
+There is also the option of suppressing the separators for the entire page  
+by declaring the following variable near the top of the page (before the first footnote):
+
+```asciidoc
+:afnote-omit-separators: true
+```
+
+
 
 
 

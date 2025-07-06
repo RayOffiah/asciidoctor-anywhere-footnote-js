@@ -1,5 +1,4 @@
-require('@asciidoctor/core');
-
+require('@asciidoctor/core')
 const _ = require('lodash')
 const randomstring = require('randomstring')
 const romans = require('romans')
@@ -19,9 +18,21 @@ class AnywhereFootnote {
 }
 
 let footnote_list = []
-let afnote_format = ''
 let block_reset = false
+let omit_separators_for_page = false 
 
+const Formats = Object.freeze({
+    ARABIC: 'arabic',
+    ALPHA: 'alpha',
+    ROMAN: 'roman',
+})
+
+let afnote_format = Formats.ARABIC  // Default
+
+const AFNOTE_FORMAT = 'afnote-format'
+const AFNOTE_BLOCK_RESET = 'afnote-block-reset'
+const OMIT_SEPARATOR = 'omit-separator'
+const AFNOTE_OMIT_SEPARATORS = 'afnote-omit-separators'
 module.exports = function (registry) {
 
     registry.inlineMacro('afnote', function () {
@@ -34,23 +45,24 @@ module.exports = function (registry) {
             
             //Now see if we have an afnote-format attribute
             
-            if (document.getAttribute('afnote-format')) {
-                afnote_format = document.getAttribute('afnote-format')
+            if (document.getAttribute(AFNOTE_FORMAT)) {
+                afnote_format = Formats[document.getAttribute(AFNOTE_FORMAT).toUpperCase()]
             }
             else {
-                afnote_format = 'arabic'
+                afnote_format = Formats.ARABIC
             }
 
+            block_reset = document.getAttribute(AFNOTE_BLOCK_RESET) === 'true'
+            omit_separators_for_page = document.getAttribute(AFNOTE_OMIT_SEPARATORS) === 'true'
             
             let footnote = new AnywhereFootnote()
 
-            // Small bug in the api. It needs to distinguish between inline and block
-            if (_.isEmpty(attributes) || attributes['omit-separator']) {
+            if (_.isEmpty(attributes) || attributes[OMIT_SEPARATOR]) {
 
                 // Then we are looking at the block
                 // type: afnote:first-block[]
                 
-                let omit_separator =  attributes['omit-separator'].toLowerCase() === 'true' 
+                let omit_separator =  attributes[OMIT_SEPARATOR] === 'true' 
                 return processFootnoteBlock(this, parent, target, omit_separator)
             }
 
@@ -73,7 +85,7 @@ module.exports = function (registry) {
             footnote.lbrace = attributes['lbrace'] === undefined ? '&#91;' : attributes['lbrace']
             footnote.rbrace = attributes['rbrace'] === undefined ? '&#93;' : attributes['rbrace']
             
-            addFootNoteReferences(footnote)
+            addFootNoteReferences(footnote, block_reset)
             
             // This odd bit of code is to ensure that we don't end up setting duplicate anchor ids
             // for footnotes that reference other footnotes. In this case, the second footnote
@@ -136,12 +148,12 @@ module.exports = function (registry) {
 
     })
 
-    function addFootNoteReferences(footnote) {
+    function addFootNoteReferences(footnote, block_reset) {
 
         // First, find the highest footnote number. The easiest thing to do is 
         //  count the number of footnotes in each block
 
-        let counter = numberOfFootnotesInBlock(footnote.block_id) + 1
+        let counter = numberOfFootnotesInBlock(footnote.block_id, block_reset) + 1
 
         if (footnote.ref_id && !footnote.text_parameter) {
             // Reference to the existing footnote - use its marker and ref_id
@@ -159,11 +171,16 @@ module.exports = function (registry) {
         }
     }
     
-    function numberOfFootnotesInBlock(block_id) {
+    function numberOfFootnotesInBlock(block_id, block_reset) {
         
         // Remember that you for generating the next footnote number, you only need to count the footnotes  
         // that have a text parameter; the ones that don't are referencing an existing footnote.
-        return footnote_list.filter(footnote => footnote.block_id === block_id && footnote.text_parameter).length
+        if (block_reset) {
+            return footnote_list.filter(footnote => footnote.block_id === block_id && footnote.text_parameter).length
+        }
+        else {
+            return footnote_list.filter(footnote => footnote.text_parameter).length
+        }
     }
 
 
@@ -176,26 +193,26 @@ module.exports = function (registry) {
     function getFormattedNumber(number, format) {
         
         switch (format) {
-            case 'arabic': {
-                return String(number);
+            case Formats.ARABIC: {
+                return String(number)
             } 
-            case 'alpha' : {
+            case Formats.ALPHA : {
                 
                 if (number < 1 || number > 26) throw new Error('Alpha format only supports up to 26 footnotes')
                 return ('a' + number - 1).toString()
             }
-            case 'roman' : {
+            case Formats.ROMAN : {
                 if (number < 1 || number > 3999) throw new Error('Roman format only supports up to 3999 footnotes')
                 return romans.romanize(number)
             }
-            default: return number.toString()
+            default: throw new Error(`Unknown format: ${format}`)
         }
     }
 
     function createFootnoteReference(footnote, idString) {
-        const baseXref = `xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}]`;
-
-        return idString ? `[[${idString}-ref]]${baseXref}` : baseXref;
+        
+        const baseXref = `xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}]`
+        return idString ? `[[${idString}-ref]]${baseXref}` : baseXref
     }
 
 }
