@@ -120,7 +120,7 @@ module.exports = function (registry) {
 
             let footnote_block = ''
             
-            if (omit_separator) {
+            if (omit_separator || omit_separators_for_page) {
 
                 footnote_block = `\n\n`
 
