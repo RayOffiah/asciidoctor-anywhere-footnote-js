@@ -1,0 +1,7 @@
+__tests__/
+coverage/
+.github/
+.vscode/
+.idea/
+*.html
+.vale.ini
