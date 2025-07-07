@@ -62,7 +62,7 @@ module.exports = function (registry) {
                 // Then we are looking at the block
                 // type: afnote:first-block[]
                 
-                let omit_separator =  attributes[OMIT_SEPARATOR] === 'true' 
+                let omit_separator =  attributes[OMIT_SEPARATOR] === 'true' || omit_separators_for_page
                 return processFootnoteBlock(this, parent, target, omit_separator)
             }
 
@@ -120,7 +120,7 @@ module.exports = function (registry) {
 
             let footnote_block = ''
             
-            if (omit_separator || omit_separators_for_page) {
+            if (omit_separator) {
 
                 footnote_block = `\n\n`
 
