@@ -130,16 +130,25 @@ module.exports = function (registry) {
                 footnote_block = separator.convert()    
             }
             
+            let footnote_block_list = self.createList(parent, 'dlist', {role: "anywhere-footnote-horizontal"})
+            
             footnote_group.forEach(footnote => {
                 
                 // You only need a footnote block entry if you have some text for it.
                 // Otherwise, the footnote is referencing another footnote.
                 if (footnote.text_parameter) {
-                    footnote_block += `xref:${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote-marker"][[${footnote.block_id}-${footnote.ref_id}-block]] ${footnote.text_parameter} +\n`
+                    
+                    let term = `xref:${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote-marker"][[${footnote.block_id}-${footnote.ref_id}-block]]`
+                    let description = `${footnote.text_parameter}`
+                    let footnote_term = self.createListItem(footnote_block_list, `${term}`)
+                    let footnote_description = self.createListItem(footnote_block_list, `${description}`)
+                    let dlist_item = [[footnote_term], footnote_description]
+
+                    footnote_block_list.getBlocks().push(dlist_item)
                 }
             })
             
-            return self.createInline(parent, 'quoted', footnote_block, {
+            return self.createInline(parent, 'quoted', footnote_block_list.convert(), {
                 attributes: {
                     role: 'anywhere-footnote-block'
                 }
