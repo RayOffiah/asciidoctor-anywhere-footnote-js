@@ -1,6 +1,6 @@
 {
   "name": "asciidoctor-anywhere-footnote",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Allows you to put footnote blocks anywhere on the page.",
   "main": "anywhere-footnote-processor.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "jest": "^28.1.0"
   },
   "dependencies": {
-    "@asciidoctor/core": "^2.2.6",
+    "@asciidoctor/core": "^2.2.8",
     "@jest/globals": "^30.0.0",
     "lodash": "^4.17.21",
     "randomstring": "^1.3.1",

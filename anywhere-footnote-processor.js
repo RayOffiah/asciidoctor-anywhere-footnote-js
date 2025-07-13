@@ -118,17 +118,9 @@ module.exports = function (registry) {
                 throw new Error(`No footnotes found for block: ${block_id}`)
             }
 
-            let footnote_block = ''
-            
-            if (omit_separator) {
+            let separator_text = omit_separator  ? `\n\n` 
+                :  self.createBlock(parent, 'paragraph', '', {"role": "anywhere-footnote-hr-divider"}).convert()
 
-                footnote_block = `\n\n`
-
-            }
-            else {
-                let separator = self.createBlock(parent, 'paragraph', '', {"role": "anywhere-footnote-hr-divider"})
-                footnote_block = separator.convert()    
-            }
             
             let footnote_block_list = self.createList(parent, 'dlist', {role: "anywhere-footnote-horizontal"})
             
@@ -148,7 +140,7 @@ module.exports = function (registry) {
                 }
             })
             
-            return self.createInline(parent, 'quoted', footnote_block_list.convert(), {
+            return self.createInline(parent, 'quoted', `${separator_text}\n${footnote_block_list.convert()}`, {
                 attributes: {
                     role: 'anywhere-footnote-block'
                 }
