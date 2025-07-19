@@ -1,6 +1,5 @@
 require('@asciidoctor/core')
 const _ = require('lodash')
-const randomstring = require('randomstring')
 const romans = require('romans')
 
 class AnywhereFootnote {
@@ -17,22 +16,32 @@ class AnywhereFootnote {
     }
 }
 
-let footnote_list = []
-let block_reset = false
-let omit_separators_for_page = false 
-
 const Formats = Object.freeze({
     ARABIC: 'arabic',
     ALPHA: 'alpha',
     ROMAN: 'roman',
 })
 
-let afnote_format = Formats.ARABIC  // Default
-
 const AFNOTE_FORMAT = 'afnote-format'
 const AFNOTE_BLOCK_RESET = 'afnote-block-reset'
 const OMIT_SEPARATOR = 'omit-separator'
+
+const AFNOTE_ID_PREFIX = 'afnote-id-prefix'
+const AFNOTE_CSS_PREFIX = 'afnote-css-prefix'
+
 const AFNOTE_OMIT_SEPARATORS = 'afnote-omit-separators'
+const AFNOTE_ID_DEFAULT_PREFIX = 'afnote-'
+const AFNOTE_CSS_DEFAULT_PREFIX = 'afnote-'
+
+let footnote_list = []
+let block_reset = false
+let omit_separators_for_page = false 
+let af_note_id_prefix = AFNOTE_ID_DEFAULT_PREFIX
+let af_note_css_prefix = AFNOTE_CSS_DEFAULT_PREFIX
+
+
+let afnote_format = Formats.ARABIC  // Default
+
 module.exports = function (registry) {
 
     registry.inlineMacro('afnote', function () {
@@ -54,6 +63,8 @@ module.exports = function (registry) {
 
             block_reset = document.getAttribute(AFNOTE_BLOCK_RESET) === 'true'
             omit_separators_for_page = document.getAttribute(AFNOTE_OMIT_SEPARATORS) === 'true'
+            af_note_id_prefix = document.getAttribute(AFNOTE_ID_PREFIX) ? document.getAttribute(AFNOTE_ID_PREFIX) : AFNOTE_ID_DEFAULT_PREFIX
+            af_note_css_prefix = document.getAttribute(AFNOTE_CSS_PREFIX) ? document.getAttribute(AFNOTE_CSS_PREFIX) : AFNOTE_CSS_DEFAULT_PREFIX
             
             let footnote = new AnywhereFootnote()
 
@@ -79,7 +90,7 @@ module.exports = function (registry) {
                 footnote.text_parameter = ''
             }
 
-            footnote.ref_id = attributes['refid'] ? attributes['refid'] : randomstring.generate(8)
+            footnote.ref_id = attributes['refid'] ? attributes['refid'] : `${numberOfFootnotesInBlock(footnote.block_id, false) + 1}`
             footnote.footnote_marker = attributes['marker'] ? attributes['marker'] : ''
             
             footnote.lbrace = attributes['lbrace'] === undefined ? '&#91;' : attributes['lbrace']
@@ -92,7 +103,7 @@ module.exports = function (registry) {
             // is assigned another random string, which means we won't be able to click to it
             // from the footnote block.
             let idString = footnote_list.some(item => item.ref_id === footnote.ref_id)
-            ? '' : `${footnote.block_id}-${footnote.ref_id}`
+            ? '' : `${af_note_id_prefix}${footnote.block_id}-${footnote.ref_id}`
             
            let inline = createFootnoteReference(footnote, idString)
 
@@ -100,7 +111,7 @@ module.exports = function (registry) {
             
             return this.createInline(parent, 'quoted', inline, {
                 attributes: {
-                    role: 'anywhere-footnote-marker',
+                    role: `${af_note_css_prefix}marker`,
                 }
             })
         })
@@ -119,10 +130,10 @@ module.exports = function (registry) {
             }
 
             let separator_text = omit_separator  ? `\n\n` 
-                :  self.createBlock(parent, 'paragraph', '', {"role": "anywhere-footnote-hr-divider"}).convert()
+                :  self.createBlock(parent, 'paragraph', '', {"role": `${af_note_css_prefix}hr-divider`}).convert()
 
             
-            let footnote_block_list = self.createList(parent, 'dlist', {role: "anywhere-footnote-horizontal"})
+            let footnote_block_list = self.createList(parent, 'dlist', {role: `${af_note_css_prefix}horizontal`})
             
             footnote_group.forEach(footnote => {
                 
@@ -130,7 +141,7 @@ module.exports = function (registry) {
                 // Otherwise, the footnote is referencing another footnote.
                 if (footnote.text_parameter) {
                     
-                    let term = `xref:${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="anywhere-footnote-marker"][[${footnote.block_id}-${footnote.ref_id}-block]]`
+                    let term = `xref:${af_note_id_prefix}${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="${af_note_css_prefix}marker"][[${af_note_id_prefix}${footnote.block_id}-${footnote.ref_id}-def]]`
                     let description = `${footnote.text_parameter}`
                     let footnote_term = self.createListItem(footnote_block_list, `${term}`)
                     let footnote_description = self.createListItem(footnote_block_list, `${description}`)
@@ -142,7 +153,7 @@ module.exports = function (registry) {
             
             return self.createInline(parent, 'quoted', `${separator_text}\n${footnote_block_list.convert()}`, {
                 attributes: {
-                    role: 'anywhere-footnote-block'
+                    role: `${af_note_css_prefix}block`
                 }
             })
         }
@@ -160,6 +171,12 @@ module.exports = function (registry) {
             // Reference to the existing footnote - use its marker and ref_id
             let referenced_footnote = getExistingFootnoteMarker(footnote_list, footnote.ref_id)
 
+            // If you don't find a referenced note, then something has gone wrong.
+            
+            if (!referenced_footnote) {
+                throw new Error(`No reference footnote found with refid: ${footnote.ref_id}`)   
+            }
+            
             footnote.footnote_marker = referenced_footnote.footnote_marker
             footnote.ref_id = referenced_footnote.ref_id
         }
@@ -212,7 +229,7 @@ module.exports = function (registry) {
 
     function createFootnoteReference(footnote, idString) {
         
-        const baseXref = `xref:${footnote.block_id}-${footnote.ref_id}-block[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}]`
+        const baseXref = `xref:${af_note_id_prefix}${footnote.block_id}-${footnote.ref_id}-def[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}]`
         return idString ? `[[${idString}-ref]]${baseXref}` : baseXref
     }
 

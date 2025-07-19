@@ -89,7 +89,35 @@ afnote:first-block[]
 
     })
 
+    test('Using two marker', () => {
 
+        // noinspection SpellCheckingInspection GrammarInspection
+        let input_document = ` 
+
+= Test document
+
+++++
+<link rel="stylesheet" href="anywhere-footnote.css"/>
+++++
+
+This is a test document.
+It has two lines{empty}afnote:first-block[marker='*', reftext='This is a footnote'], 
+the last of which will contain a footnote{empty}afnote:first-block[Another marker, marker='#']
+And we have another sentence before the block
+
+afnote:first-block[]
+`
+
+        let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
+            extension_registry: registry})
+
+        writeFile("two_markers.html", converted_doc)
+
+
+
+    })
+
+    
     test('Using reference marks', () => {
 
         // noinspection SpellCheckingInspection GrammarInspection
@@ -295,7 +323,35 @@ afnote:second-block[]
         writeFile("two_tables.html", converted_doc)
     })
 
+    test('Test different prefixes', () => {
 
+        let input_document = ` 
+
+= Test document
+
+:afnote-id-prefix: rayId-
+:afnote-css-prefix: rayCss-
+
+++++
+<link rel="stylesheet" href="anywhere-footnote.css"/>
+++++
+
+This is a test document.
+It has two lines{empty}afnote:first-block[This is a footnote, lbrace='{empty}', rbrace='{empty}'], the last of which will contain a footnote
+
+afnote:first-block[]
+`
+
+        let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
+            extension_registry: registry})
+
+        expect(converted_doc.includes("rayId-first-block-1")).toBeTruthy()
+        expect(converted_doc.includes("rayCss-marker")).toBeTruthy()
+        expect(converted_doc.includes("rayCss-block")).toBeTruthy()
+        writeFile("prefixes.html", converted_doc)
+
+    })
+    
 })
 
 
