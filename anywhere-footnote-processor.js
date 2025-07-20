@@ -169,12 +169,12 @@ module.exports = function (registry) {
 
         if (footnote.ref_id && !footnote.text_parameter) {
             // Reference to the existing footnote - use its marker and ref_id
-            let referenced_footnote = getExistingFootnoteMarker(footnote_list, footnote.ref_id)
+            let referenced_footnote = getExistingFootnoteMarker(footnote_list, footnote.block_id, footnote.ref_id)
 
             // If you don't find a referenced note, then something has gone wrong.
             
             if (!referenced_footnote) {
-                throw new Error(`No reference footnote found with refid: ${footnote.ref_id}`)   
+                throw new Error(`No reference footnote found with refid: ${footnote.ref_id} found in block: ${footnote.block_id}`)   
             }
             
             footnote.footnote_marker = referenced_footnote.footnote_marker
@@ -202,9 +202,10 @@ module.exports = function (registry) {
     }
 
 
-    function getExistingFootnoteMarker(footnote_list, refid) {
+    function getExistingFootnoteMarker(footnote_list, block_id, ref_id) {
 
-        return footnote_list.find(footnote => footnote.ref_id === refid && footnote.text_parameter)
+        return footnote_list.find(footnote => footnote.block_id === block_id 
+            && footnote.ref_id === ref_id && footnote.text_parameter)
 
     }   
     
@@ -232,7 +233,7 @@ module.exports = function (registry) {
         const baseXref = `xref:${af_note_id_prefix}${footnote.block_id}-${footnote.ref_id}-def[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}]`
         return idString ? `[[${idString}-ref]]${baseXref}` : baseXref
     }
-
+    
 }
 
 
