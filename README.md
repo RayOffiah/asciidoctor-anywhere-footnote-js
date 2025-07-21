@@ -173,7 +173,33 @@ by declaring the following variable near the top of the page (before the first f
 :afnote-omit-separators: true
 ```
 
+## Running the Extension
 
+Add the extension to your Node installation:
+
+```shell
+npm i asciidoctor-anywhere-footnote
+```
+Then extension can be used with an AsciiDoctor ``convert()`` call:
+
+```javascript
+
+registry = asciidoctor.Extensions.create();
+require('../anywhere-footnote-processor')(registry);
+
+let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
+   extension_registry: registry})
+```
+
+Or as part of your Antora installation:
+ 
+```yaml
+  extensions:
+  - asciidoctor-kroki
+  - asciidoctor-external-callout
+  - '@asciidoctor/tabs'
+  - asciidoctor-anywhere-footnote
+```
 
 
 
