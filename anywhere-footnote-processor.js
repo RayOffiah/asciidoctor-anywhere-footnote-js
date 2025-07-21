@@ -93,8 +93,8 @@ module.exports = function (registry) {
             footnote.ref_id = attributes['refid'] ? attributes['refid'] : `${numberOfFootnotesInBlock(footnote.block_id, false) + 1}`
             footnote.footnote_marker = attributes['marker'] ? attributes['marker'] : ''
             
-            footnote.lbrace = attributes['lbrace'] === undefined ? '&#91;' : attributes['lbrace']
-            footnote.rbrace = attributes['rbrace'] === undefined ? '&#93;' : attributes['rbrace']
+            footnote.lbrace = attributes['lbrace'] === undefined ? '' : attributes['lbrace']
+            footnote.rbrace = attributes['rbrace'] === undefined ? '' : attributes['rbrace']
             
             addFootNoteReferences(footnote, block_reset)
             
