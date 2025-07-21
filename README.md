@@ -63,17 +63,25 @@ The footnotes and the footnote block are rendered in HTML with an attached style
 It's included here for reference:
 
 ```css
-.anywhere-footnote-marker {
+.afnote-marker {
    vertical-align: super;
    font-size: 100%;
    text-decoration: none;
 }
 
-.anywhere-footnote-block {
+.afnote-marker::before {
+   content: "[";
+}
+
+.afnote-marker::after {
+   content: "]";
+}
+
+.afnote-block {
    text-decoration: none;
 }
 
-.anywhere-footnote-hr-divider {
+.afnote-hr-divider {
    height: 1px;
    background-color: #ccc; /* Standard gray color similar to default HR */
    border: none;
@@ -81,15 +89,15 @@ It's included here for reference:
    width: 20%;
 }
 
-div.anywhere-footnote-horizontal dl {
+div.afnote-horizontal dl {
    display: grid;
    grid-template-columns: 25px auto;
    grid-column-gap: 1px;
 }
 
 /* Force each dt and dd to be on the same line */
-div.anywhere-footnote-horizontal dl > dt,
-div.anywhere-footnote-horizontal dl > dd {
+div.afnote-horizontal dl > dt,
+div.afnote-horizontal dl > dd {
    display: inline !important;
    vertical-align: top !important;
    margin: 0 !important;
@@ -97,11 +105,12 @@ div.anywhere-footnote-horizontal dl > dd {
 }
 
 /* Remove margins from paragraphs inside dd */
-div.anywhere-footnote-horizontal dl > dd p {
+div.afnote-horizontal dl > dd p {
    display: inline;
    margin: 0;
    padding: 0;
 }
+
 ```
 
 ## Omitting the separator
