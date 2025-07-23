@@ -25,11 +25,12 @@ The macro parameter (`footnote-block`) points to the `afnote` block where the fo
 ```asciidoc
 This is where the footnote block goes:
 
-afnote:footnote-block[]
+afnote::footnote-block[]
 ```
+> **Note**: Block macros must appear on their own line with no other characters.
 
-> [!NOTE]
-> As you can see, the rendering `afnote` is an inline macro, denoted by a single colon (`:`)
+
+> **Tip** You can also use a single colon for the footnote block macro. (`afnote:footnote-block[]`)
 
 All the footnotes with the same identifier will be rendered in the same block,
 so you can have multiple footnote blocks on your page.
@@ -46,14 +47,14 @@ afnote:my-block[reftext="Footnote text", lbrace="(" rbrace=")"] (5)
 
 
 1. The standard pattern. The text in brackets will be used as the footnote.
-2. You can also set the footnote text using the `reftext` parameter. In this case we are also using the `refid` to set a reusable reference identifier.
+2. You can also set the footnote text using the `reftext` parameter. In this case we’re also using the `refid` to set a reusable reference identifier.
 3. The `refid` is used to reference an existing footnote so that multiple footnote references can point to the same footnote.
 4. Normally, the footnotes are numbered per block, but if you wish, you can assign your own marker for any footnote.
 5. As a default, the footnote markers are encased in square brackets. You can change this (to parentheses, for example)
    by using the `lbrace` and/or `rbrace` parameters.
 
-> [!TIP]
-> If you don't want any kind of bracket encasing the footnote, then set both `lbrace` and `rbrace` to `{empty} or empty strings.`
+> **Tip** If you don't want any kind of bracket encasing the footnote,
+> then set both `lbrace` and `rbrace` to `{empty} or empty strings.`
 >
 > You don't have to use both parameters. If you set `lbrace={empyty}` and  `rbrace=")"`, for example, you can footnote marked like this: `1)`
 
@@ -136,8 +137,8 @@ But other forms can be used by adding an attribute selector to your page:
 ```
 The footnotes will use a single letter as a footnote marker.
 
-> [!WARNING]
-> Do not use this format if you have more than 26 footnotes on your page.
+
+> ** Warning** Do not use this format if you have more than 26 footnotes on your page.
 
 You can also use roman numerals.
 
@@ -145,8 +146,7 @@ You can also use roman numerals.
 :afnote-format: roman
 ```
 
-> [!WARNING]
-> Do not use this format if you have more than 3999 footnotes on your page.
+> ** Warning** Do not use this format if you have more than 3999 footnotes on your page.
 > (Though if you did then I suspect footnote formatting would be the least of your problems)
 
 Omit the `afnote-format` attribute for standard arabic, or use

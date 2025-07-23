@@ -68,13 +68,18 @@ module.exports = function (registry) {
             
             let footnote = new AnywhereFootnote()
 
-            if (_.isEmpty(attributes) || attributes[OMIT_SEPARATOR]) {
+            if (_.startsWith(target, ':') ||
+                _.isEmpty(attributes) 
+                || attributes[OMIT_SEPARATOR]) {
 
                 // Then we are looking at the block
                 // type: afnote:first-block[]
                 
                 let omit_separator =  attributes[OMIT_SEPARATOR] === 'true' || omit_separators_for_page
-                return processFootnoteBlock(this, parent, target, omit_separator)
+                
+                const block_id = _.startsWith(target, ':') ? _.trimStart(target, ':') : target
+                
+                return processFootnoteBlock(this, parent, block_id, omit_separator)
             }
 
             footnote.block_id = target
@@ -141,7 +146,7 @@ module.exports = function (registry) {
                 // Otherwise, the footnote is referencing another footnote.
                 if (footnote.text_parameter) {
                     
-                    let term = `xref:${af_note_id_prefix}${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="${af_note_css_prefix}marker"][[${af_note_id_prefix}${footnote.block_id}-${footnote.ref_id}-def]]`
+                    let term = `[[${af_note_id_prefix}${footnote.block_id}-${footnote.ref_id}-def]]xref:${af_note_id_prefix}${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="${af_note_css_prefix}marker"]`
                     let description = `${footnote.text_parameter}`
                     let footnote_term = self.createListItem(footnote_block_list, `${term}`)
                     let footnote_description = self.createListItem(footnote_block_list, `${description}`)
