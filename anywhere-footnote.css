@@ -4,11 +4,11 @@
     text-decoration: none;
 }
 
-.afnote-marker:before {
+.afnote-marker::before {
     content: "[";
 }
 
-.afnote-marker:after {
+.afnote-marker::after {
     content: "]";
 }
 
