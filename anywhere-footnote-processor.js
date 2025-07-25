@@ -134,6 +134,9 @@ module.exports = function (registry) {
                 throw new Error(`No footnotes found for block: ${block_id}`)
             }
 
+            // Add an ID marker
+            const footnote_block_id_text  = `[[${afnote_id_prefix}${block_id}]]\n`
+            
             let separator_text = omit_separator ? `\n\n`
                 : self.createBlock(parent, 'paragraph', '', {"role": `${afnote_css_prefix}hr-divider`}).convert()
 
@@ -146,7 +149,14 @@ module.exports = function (registry) {
                 // Otherwise, the footnote is referencing another footnote.
                 if (footnote.text_parameter) {
 
-                    let term = `[[${afnote_id_prefix}${footnote.block_id}-${footnote.ref_id}-def]]xref:${afnote_id_prefix}${footnote.block_id}-${footnote.ref_id}-ref[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="${afnote_css_prefix}marker"]`
+                    // Some footnotes in the list are pointers to other footnotes.
+                    // If you have duplicate markers, then you will not be able to
+                    // point back to the original footnote. (Which one would you point back to?)
+                    // Instead, just use a dummy reference when the block is rendered.
+                    let xref =  (footnote_list.filter(f =>f.ref_id === footnote.ref_id).length <= 1) 
+                        ? `xref:${afnote_id_prefix}${footnote.block_id}-${footnote.ref_id}-ref` : `xref:#`
+                    
+                    let term = `[[${afnote_id_prefix}${footnote.block_id}-${footnote.ref_id}-def]]${xref}[${footnote.lbrace}${footnote.footnote_marker}${footnote.rbrace}, role="${afnote_css_prefix}marker"]`
                     let description = `${footnote.text_parameter}`
                     let footnote_term = self.createListItem(footnote_block_list, `${term}`)
                     let footnote_description = self.createListItem(footnote_block_list, `${description}`)
@@ -156,7 +166,7 @@ module.exports = function (registry) {
                 }
             })
 
-            return self.createInline(parent, 'quoted', `${separator_text}\n${footnote_block_list.convert()}`, {
+            return self.createInline(parent, 'quoted', `${footnote_block_id_text}${separator_text}\n${footnote_block_list.convert()}`, {
                 attributes: {
                     role: `${afnote_css_prefix}block`
                 }
