@@ -237,7 +237,7 @@ module.exports = function (registry) {
             }
             case Formats.ROMAN : {
                 if (number < 1 || number > 3999) throw new Error('Roman format only supports up to 3999 footnotes')
-                return romans.romanize(number)
+                return romans.romanize(number).toLowerCase()
             }
             default:
                 throw new Error(`Unknown format: ${format}`)

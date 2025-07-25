@@ -418,8 +418,38 @@ afnote::first-block[]
         writeFile("block-macro.html", converted_doc)
 
     })
-    
-    
+
+    test('Roman numerals test', () => {
+
+        // noinspection SpellCheckingInspection GrammarInspection
+        let input_document = `
+        
+= Test document
+
+:afnote-format: roman
+
+++++
+<link rel="stylesheet" href="anywhere-footnote.css"/>
+++++
+
+This is a test document.
+It has two lines{empty}afnote:first-block[This is a footnote], the last of which will contain a footnote
+            
+But what is this? Yes, another set of footnotes in a different block{empty}afnote:second-block[This is a footnote for the second block]
+
+== First block of footnotes
+afnote:first-block[]
+        
+== Second block of footnotes
+afnote:second-block[]
+            `
+        let converted_doc = asciidoctor.convert(input_document,{safe: 'safe', standalone: true,
+            extension_registry: registry})
+        
+        writeFile("roman-numerals.html", converted_doc)
+    })
+
+
 })
 
 

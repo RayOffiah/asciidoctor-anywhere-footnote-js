@@ -92,7 +92,7 @@ It's included here for reference:
 
 div.afnote-horizontal dl {
    display: grid;
-   grid-template-columns: 25px auto;
+   grid-template-columns: 30px auto;
    grid-column-gap: 1px;
 }
 
@@ -149,11 +149,13 @@ You can also use roman numerals.
 > ** Warning** Do not use this format if you have more than 3999 footnotes on your page.
 > (Though if you did then I suspect footnote formatting would be the least of your problems)
 
-Omit the `afnote-format` attribute for standard arabic, or use
+Omit the `afnote-format` attribute for standard arabic, or use:
 
 ```asciidoc
 :afnote-format: arabic
 ```
+
+> ** Note ** Bear in mind that the roman format will take up more space 
 ## Controlling the Count
 
 Normally, the footnotes are numbered page-wide: starting at 1 then continuing to the end of the page.
